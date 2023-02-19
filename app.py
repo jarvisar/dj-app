@@ -49,16 +49,15 @@ class Queue(db.Model):
     songs = db.relationship('QueueSong', backref='queue')
 
 class Song(db.Model):
-    song_id = db.Column(db.Integer, primary_key=True)
+    track_id = db.Column(db.Integer, primary_key=True)
     song_name = db.Column(db.String(100))
     artist_name = db.Column(db.String(100))
     album_name = db.Column(db.String(100))
-    track_id = db.Column(db.String(100))
     queue_songs = db.relationship('QueueSong', backref='song')
 
 class QueueSong(db.Model):
     queue_id = db.Column(db.Integer, db.ForeignKey('queue.queue_id'), primary_key=True)
-    song_id = db.Column(db.Integer, db.ForeignKey('song.song_id'), primary_key=True)
+    track_id = db.Column(db.Integer, db.ForeignKey('song.track_id'), primary_key=True)
     request_count = db.Column(db.Integer, default=1)
 
 
@@ -95,7 +94,7 @@ def join_queue(data):
     code = data['code']
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
-        song_list = [{'id': queue_song.song.song_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
+        song_list = [{'id': queue_song.song.track_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
         emit('queue_joined', {'code': code, 'songs': song_list})
     else:
         emit('invalid_code')
@@ -110,19 +109,19 @@ def add_song(data):
     if queue:
         song = Song.query.filter_by(song_name=song_name, artist_name=song_artist).first()
         if song:
-            queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, song_id=song.song_id).first()
+            queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, track_id=song.track_id).first()
             if queue_song:
                 queue_song.request_count += 1
             else:
-                queue_song = QueueSong(queue_id=queue.queue_id, song_id=song.song_id)
+                queue_song = QueueSong(queue_id=queue.queue_id, track_id=song.track_id)
                 db.session.add(queue_song)
         else:
             song = Song(song_name=song_name, artist_name=song_artist, spotify_uri=spotify_uri, image_url=image_url)
             db.session.add(song)
-            queue_song = QueueSong(queue_id=queue.queue_id, song_id=song.song_id)
+            queue_song = QueueSong(queue_id=queue.queue_id, track_id=song.track_id)
             db.session.add(queue_song)
         db.session.commit()
-        song_list = [{'id': queue_song.song.song_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
+        song_list = [{'id': queue_song.song.track_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
        
 
         emit('song_added', {'code': code, 'songs': song_list}, broadcast=True)
