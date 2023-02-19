@@ -48,7 +48,7 @@ def index():
 def create_queue():
     code = generate_code()
     queue_name = "My Queue"
-    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=request.sid)
+    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=request.sid) # Record creators session ID
     db.session.add(queue)
     db.session.commit()
     emit('queue_created', {'code': code})
@@ -58,7 +58,7 @@ def create_queue():
 def create_queue_api():
     code = generate_code()
     queue_name = "Test"
-    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id="omuxrmt33mnetsfirxi2sdsfh4j1c2kv")
+    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id="omuxrmt33mnetsfirxi2sdsfh4j1c2kv") # Hardcoded session ID for testing
     db.session.add(queue)
     db.session.commit()
     return jsonify({'code': code}), 201
@@ -107,7 +107,7 @@ def delete_song(data):
     code = data['code']
     song_id = data['song_id']
     queue = Queue.query.filter_by(queue_code=code).first()
-    if queue and queue.creator_session_id == request.sid:
+    if queue and queue.creator_session_id == request.sid: # Only queue creator can delete songs
         queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, song_id=song_id).first()
         if queue_song:
             db.session.delete(queue_song)
@@ -120,6 +120,7 @@ def delete_song(data):
         emit('invalid_code')
 
 @socketio.on('delete_queue')
+# Users can only delete queues they created
 def delete_queue():
     queue = Queue.query.filter_by(creator_session_id=request.sid).first()
     if queue:
