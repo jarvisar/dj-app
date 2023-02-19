@@ -110,7 +110,7 @@ def add_song(data):
     print(track_id)
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
-        song = Song.query.filter_by(song_name=song_name, artist_name=artist_name).first()
+        song = Song.query.filter_by(track_id=track_id).first()
         if song:
             queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, track_id=song.track_id).first()
             if queue_song:
