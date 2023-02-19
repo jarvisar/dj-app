@@ -13,7 +13,10 @@ The web app was built using the Angular framework.
 Still need a name. Current possible names:
 
 > PartyLine
+
 > DJProQ
+
 > PartyQ
+
 > QuedUp
 
