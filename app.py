@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from dotenv import load_dotenv
 import random
 import string
@@ -22,6 +22,7 @@ CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 
 # import models after db is defined
 socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
 
 # Get authorization header
 def get_auth_header():
@@ -44,6 +45,7 @@ class Queue(db.Model):
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     creator_session_id = db.Column(db.String(32), nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())  # add this line
     songs = db.relationship('QueueSong', backref='queue')
 
 class Song(db.Model):
@@ -155,43 +157,6 @@ def delete_queue():
     else:
         emit('invalid_delete')
 
-# Websocket Search Endpoint
-@socketio.on('search')
-def search(data):
-    query = data['query']
-    if not query:
-        emit('search_results', {'error': 'No query parameter provided'})
-        return
-
-    # Query parameters for searching songs
-    params = {
-        'q': query,
-        'type': 'track',
-        'limit': 10
-    }
-
-    # Make a GET request to the Spotify API
-    response = requests.get(SPOTIFY_SEARCH_API, params=params, headers=AUTH_HEADER)
-    if response.status_code != 200:
-        emit('search_results', {'error': 'Failed to retrieve search results'})
-        return
-
-    # Extract the relevant information from the response
-    results = response.json()['tracks']['items']
-    tracks = []
-    for result in results:
-        # Only include tracks in the search results
-        if result['type'] == 'track':
-            track = {
-                'song_name': result['name'],
-                'artist_name': result['artists'][0]['name'],
-                'album_name': result['album']['name'],
-                'track_id': result['id']
-            }
-            tracks.append(track)
-
-    emit('search_results', {'tracks': tracks})
-
 # HTTP Search Endpoint
 @app.route('/search', methods=['GET'])
 def search():
@@ -226,20 +191,6 @@ def search():
             tracks.append(track)
 
     return jsonify(tracks)
-
-@socketio.on('get_track_data')
-def get_track_data(data):
-    track_id = data['track_id']
-    params = {
-        'id': track_id,
-        'type': 'track'
-    }
-    response = requests.get(SPOTIFY_API_URL + '/v1/tracks', params=params, headers=AUTH_HEADER)
-    if response.status_code != 200:
-        emit('track_data_error')
-        return
-    track_data = response.json()['tracks'][0]
-    emit('track_data', track_data)
 
 @app.route('/get_track_data', methods=['GET'])
 def get_track():
