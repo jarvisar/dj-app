@@ -7,3 +7,16 @@ When a user requests a song, the Flask Python backend adds it to the queue store
 To search for songs, the app utilizes Spotify's API and searches using various keywords such as song name, artist, and album name. When a song is requested, the app sends the trackId and song information to the backend. This enables the app to retrieve song info (such as album art and genres) later on, when the DJ views the playlist.
 
 To ensure that only the creator of a queue can delete the queue or its songs, the app generates a random string, which is stored in local storage and passed to the backend. This string is then stored in the SQL database as the creatorID. When the backend sends a specific queue's data to the user's app, the app verifies the user as the queue owner by matching the string in the local storage to the creatorID. This enables the app to conditionally render HTML elements such as "Delete Song" and "Delete Queue" to the queue owner.
+
+The web app was built using the Angular framework.
+
+Still need a name. Current possible names:
+
+> PartyLine
+
+> DJProQ
+
+> PartyQ
+
+> QuedUp
+
