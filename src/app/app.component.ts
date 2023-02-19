@@ -33,18 +33,20 @@ export class AppComponent implements OnInit {
     console.log("join");
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
-        console.log('Track Data:', data);
-      },
-      (error) => {
-        console.error('Error:', error);
+        if (data != undefined){
+          console.log('Track Data:', data);
+        } else {
+          console.log("error joining queue");
+        }
       }
     );
     this.inQueue = true;
   }
 
+  trackId!: string;
   addSong(event: Event) {
     console.log("add song");
-    this.websocketService.addSong(this.inputCode, "Test", "Test", "5ikjIVLHoBrgaZ0zNrn6Ty").subscribe(
+    this.websocketService.addSong(this.inputCode, "Test", "Test", this.trackId).subscribe(
       (data: any) => {
         console.log('Track Data:', data);
       },

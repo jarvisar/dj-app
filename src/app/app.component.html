@@ -52,8 +52,9 @@
   </div>
 
   <button (click)="createQueue($event)">Create Queue</button>
-  <input type="text" [(ngModel)]="inputCode">
+  <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code">
   <button (click)="joinQueue($event)">Join Queue</button>
+  <input type="text" [(ngModel)]="trackId" placeholder="Track ID">
   <button (click)="addSong($event)" [disabled]="!inQueue">Add Song</button>
 
   <router-outlet></router-outlet>
