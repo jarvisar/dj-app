@@ -26,11 +26,29 @@ export class WebSocketService {
   }
 
   joinQueue(code: string) {
-    this.socket.emit('join', { code });
+    return new Observable(observer => {
+      this.socket.emit('join', { code });
+      this.socket.on('queue_joined', (data: any) => {
+        observer.next(data);
+      });
+      this.socket.on('invalid_code', (data: any) => {
+        observer.next(data);
+      });
+
+    });
   }
 
-  addSong(code: string, name: string, artist: string, trackId: string) {
-    this.socket.emit('add_song', { code, name, artist, trackId });
+  addSong(code: string, name: string, artist: string, track_id: string) {
+    return new Observable(observer => {
+      this.socket.emit('add_song', { code, name, artist, track_id });
+      this.socket.on('song_added', (data: any) => {
+        observer.next(data);
+      });
+      this.socket.on('invalid_code', (data: any) => {
+        observer.next(data);
+      });
+
+    });
   }
 
   deleteSong(code: string, songId: string) {
