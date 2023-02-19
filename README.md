@@ -9,3 +9,11 @@ To search for songs, the app utilizes Spotify's API and searches using various k
 To ensure that only the creator of a queue can delete the queue or its songs, the app generates a random string, which is stored in local storage and passed to the backend. This string is then stored in the SQL database as the creatorID. When the backend sends a specific queue's data to the user's app, the app verifies the user as the queue owner by matching the string in the local storage to the creatorID. This enables the app to conditionally render HTML elements such as "Delete Song" and "Delete Queue" to the queue owner.
 
 The web app was built using the Angular framework.
+
+Still need a name. Current possible names:
+
+> PartyLine
+> DJProQ
+> PartyQ
+> QuedUp
+
