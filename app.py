@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 # import models after db is defined
 socketio = SocketIO(app)
 
-
+# define SQLite schema
 class Queue(db.Model):
     queue_id = db.Column(db.Integer, primary_key=True)
     queue_name = db.Column(db.String(100))
@@ -33,10 +33,12 @@ class QueueSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey('song.song_id'), primary_key=True)
     request_count = db.Column(db.Integer, default=1)
 
+
 def generate_code():
     code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
     return code
 
+# Return index html if user visits root
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -50,7 +52,7 @@ def create_queue():
     db.session.commit()
     emit('queue_created', {'code': code})
 
-
+# HTTP request for debugging
 @app.route('/create', methods=['POST'])
 def create_queue_api():
     code = generate_code()
