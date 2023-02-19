@@ -1,15 +1,40 @@
 from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
+from dotenv import load_dotenv
 import random
 import string
+import requests
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
+SPOTIFY_SEARCH_API = 'https://api.spotify.com/v1/search'
+
+AUTH_HEADER = None
+
+load_dotenv(dotenv_path='./spotify_client.env')
+
+CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+
 # import models after db is defined
 socketio = SocketIO(app)
+
+# Get authorization header
+def get_auth_header():
+    global AUTH_HEADER
+    if AUTH_HEADER is None:
+        url = "https://accounts.spotify.com/api/token"
+        data = {"grant_type": "client_credentials"}
+        response = requests.post(url, auth=(CLIENT_ID, CLIENT_SECRET), data=data)
+        if response.status_code != 200:
+            print(f"Error getting token: {response.json()}")
+            return None
+        AUTH_HEADER = {"Authorization": "Bearer " + response.json()["access_token"]}
+    return AUTH_HEADER
 
 # define SQLite schema
 class Queue(db.Model):
@@ -130,7 +155,43 @@ def delete_queue():
     else:
         emit('invalid_delete')
 
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query')
+    if not query:
+        return 'No query parameter provided', 400
+
+    # Query parameters for searching songs
+    params = {
+        'q': query,
+        'type': 'track',
+        'limit': 10
+    }
+
+    # Make a GET request to the Spotify API
+    response = requests.get(SPOTIFY_SEARCH_API, params=params, headers=AUTH_HEADER)
+    if response.status_code != 200:
+        return 'Failed to retrieve search results', 500
+
+    # Extract the relevant information from the response
+    results = response.json()['tracks']['items']
+    tracks = []
+    for result in results:
+        # Only include tracks in the search results
+        if result['type'] == 'track':
+            track = {
+                'song_name': result['name'],
+                'artist_name': result['artists'][0]['name'],
+                'album_name': result['album']['name'],
+                'track_id': result['id']
+            }
+            tracks.append(track)
+
+    return jsonify(tracks)
+
 if __name__ == '__main__':
-	with app.app_context():
-		db.create_all()
-	socketio.run(app)
+    get_auth_header()
+    with app.app_context():
+        db.create_all()
+    socketio.run(app)
+    
