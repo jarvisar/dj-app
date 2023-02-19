@@ -59,6 +59,7 @@ class QueueSong(db.Model):
     track_id = db.Column(db.String(100), db.ForeignKey('song.track_id'), primary_key=True)
     request_count = db.Column(db.Integer, default=1)
 
+# Generate random 4 character code
 def generate_code():
     code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
     return code
@@ -68,6 +69,7 @@ def generate_code():
 def index():
     return render_template('index.html')
 
+# Create queue
 @socketio.on('create')
 def create_queue():
     code = generate_code()
@@ -87,6 +89,7 @@ def create_queue_api():
     db.session.commit()
     return jsonify({'code': code}), 201
 
+# Join queue
 @socketio.on('join')
 def join_queue(data):
     code = data['code']
@@ -97,6 +100,7 @@ def join_queue(data):
     else:
         emit('invalid_code')
 
+# Add song (used after joining queue)
 @socketio.on('add_song')
 def add_song(data):
     code = data['code']
@@ -125,6 +129,7 @@ def add_song(data):
     else:
         emit('invalid_code')
 
+# Delete song (only used by queue creators)
 @socketio.on('delete_song')
 def delete_song(data):
     code = data['code']
@@ -142,6 +147,7 @@ def delete_song(data):
     else:
         emit('invalid_code')
 
+# Delete queue (only used by queue creators)
 @socketio.on('delete_queue')
 # Users can only delete queues they created
 def delete_queue():
