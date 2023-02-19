@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify 
+from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
 import random
@@ -18,6 +18,7 @@ class Queue(db.Model):
     queue_code = db.Column(db.String(4), unique=True)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
+    creator_session_id = db.Column(db.String(32), nullable=False)
     songs = db.relationship('QueueSong', backref='queue')
 
 class Song(db.Model):
@@ -47,7 +48,7 @@ def index():
 def create_queue():
     code = generate_code()
     queue_name = "My Queue"
-    queue = Queue(queue_name=queue_name, queue_code=code)
+    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=request.sid)
     db.session.add(queue)
     db.session.commit()
     emit('queue_created', {'code': code})
@@ -57,7 +58,7 @@ def create_queue():
 def create_queue_api():
     code = generate_code()
     queue_name = "Test"
-    queue = Queue(queue_name=queue_name, queue_code=code)
+    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id="omuxrmt33mnetsfirxi2sdsfh4j1c2kv")
     db.session.add(queue)
     db.session.commit()
     return jsonify({'code': code}), 201
@@ -100,6 +101,33 @@ def add_song(data):
         emit('song_added', {'code': code, 'songs': song_list}, broadcast=True)
     else:
         emit('invalid_code')
+
+@socketio.on('delete_song')
+def delete_song(data):
+    code = data['code']
+    song_id = data['song_id']
+    queue = Queue.query.filter_by(queue_code=code).first()
+    if queue and queue.creator_session_id == request.sid:
+        queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, song_id=song_id).first()
+        if queue_song:
+            db.session.delete(queue_song)
+            db.session.commit()
+            song_list = [{'id': queue_song.song.song_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
+            emit('song_deleted', {'code': code, 'songs': song_list}, broadcast=True)
+        else:
+            emit('invalid_song')
+    else:
+        emit('invalid_code')
+
+@socketio.on('delete_queue')
+def delete_queue():
+    queue = Queue.query.filter_by(creator_session_id=request.sid).first()
+    if queue:
+        db.session.delete(queue)
+        db.session.commit()
+        emit('queue_deleted', {'code': queue.queue_code}, broadcast=True)
+    else:
+        emit('invalid_delete')
 
 if __name__ == '__main__':
 	with app.app_context():
