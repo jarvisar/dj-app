@@ -193,15 +193,14 @@ def search():
     return jsonify(tracks)
 
 @app.route('/get_track_data', methods=['GET'])
-def get_track():
-    track_id = request.args.get('query')
-    print(track_id)
-    response = requests.get(f'https://api.spotify.com/v1/tracks/{track_id}', headers=AUTH_HEADER)
-    
-    if response.status_code != 200:
-        return 'Failed to retrieve track data', 500
-
-    track_data = response.json()
+def get_tracks_data():
+    track_ids = request.args.getlist('track_id')
+    track_data = []
+    for track_id in track_ids:
+        params = {'ids': track_id}
+        response = requests.get(f'https://api.spotify.com/v1/tracks/{track_id}', headers=AUTH_HEADER)
+        if response.status_code == 200:
+            track_data.append(response.json())
     return jsonify(track_data)
 
 if __name__ == '__main__':
