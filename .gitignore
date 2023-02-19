@@ -1,4 +1,5 @@
 /__pycache__
 /instance
+/instance/database.db
 instance/database.db
 spotify_client.env
