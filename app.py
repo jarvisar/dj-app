@@ -155,6 +155,44 @@ def delete_queue():
     else:
         emit('invalid_delete')
 
+# Websocket Search Endpoint
+@socketio.on('search')
+def search(data):
+    query = data['query']
+    if not query:
+        emit('search_results', {'error': 'No query parameter provided'})
+        return
+
+    # Query parameters for searching songs
+    params = {
+        'q': query,
+        'type': 'track',
+        'limit': 10
+    }
+
+    # Make a GET request to the Spotify API
+    response = requests.get(SPOTIFY_SEARCH_API, params=params, headers=AUTH_HEADER)
+    if response.status_code != 200:
+        emit('search_results', {'error': 'Failed to retrieve search results'})
+        return
+
+    # Extract the relevant information from the response
+    results = response.json()['tracks']['items']
+    tracks = []
+    for result in results:
+        # Only include tracks in the search results
+        if result['type'] == 'track':
+            track = {
+                'song_name': result['name'],
+                'artist_name': result['artists'][0]['name'],
+                'album_name': result['album']['name'],
+                'track_id': result['id']
+            }
+            tracks.append(track)
+
+    emit('search_results', {'tracks': tracks})
+
+# HTTP Search Endpoint
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query')
@@ -188,6 +226,32 @@ def search():
             tracks.append(track)
 
     return jsonify(tracks)
+
+@socketio.on('get_track_data')
+def get_track_data(data):
+    track_id = data['track_id']
+    params = {
+        'id': track_id,
+        'type': 'track'
+    }
+    response = requests.get(SPOTIFY_API_URL + '/v1/tracks', params=params, headers=AUTH_HEADER)
+    if response.status_code != 200:
+        emit('track_data_error')
+        return
+    track_data = response.json()['tracks'][0]
+    emit('track_data', track_data)
+
+@app.route('/get_track_data', methods=['GET'])
+def get_track():
+    track_id = request.args.get('query')
+    print(track_id)
+    response = requests.get(f'https://api.spotify.com/v1/tracks/{track_id}', headers=AUTH_HEADER)
+    
+    if response.status_code != 200:
+        return 'Failed to retrieve track data', 500
+
+    track_data = response.json()
+    return jsonify(track_data)
 
 if __name__ == '__main__':
     get_auth_header()
