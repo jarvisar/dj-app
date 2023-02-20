@@ -139,21 +139,29 @@ export class AppComponent implements OnInit {
 
   searchSpotify(event: Event) {
     console.log("search spotify");
-    this.websocketService.searchTracks(this.searchString).subscribe(
-      (data: any) => {
-        this.searchData = data;
-        this.showSearchTable = true;
-        this.errorMessage = '';
-      },
-      (error) => {
-        console.error('Error:', error);
-        this.showSearchTable = false;
-        this.errorMessage = 'Error searching for tracks.';
-          setTimeout(() => {
-            this.errorMessage = ''; // remove class after animation ends
-          }, 3000); // remove class after 5 seconds
-      }
-    );
+    if (this.searchString != undefined && this.searchString != ""){
+      this.websocketService.searchTracks(this.searchString).subscribe(
+        (data: any) => {
+          this.searchData = data;
+          this.showSearchTable = true;
+          this.errorMessage = '';
+        },
+        (error) => {
+          console.error('Error:', error);
+          this.showSearchTable = false;
+          this.errorMessage = 'Error searching for tracks.';
+            setTimeout(() => {
+              this.errorMessage = ''; // remove class after animation ends
+            }, 3000); // remove class after 5 seconds
+        }
+      );
+    } else {
+      this.errorMessage = 'Enter a valid search.';
+      setTimeout(() => {
+        this.errorMessage = ''; // remove class after animation ends
+      }, 3000); // remove class after 5 seconds
+    }
+
   }
 
   maxVotesReached(){
