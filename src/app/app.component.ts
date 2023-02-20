@@ -11,7 +11,10 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'dj-app';
   inputCode!: string;
+  searchString!: string;
   inQueue: boolean = false;
+  showTable: boolean = false;
+  trackData = [];
   
   constructor(private websocketService: WebSocketService) {}
 
@@ -35,12 +38,13 @@ export class AppComponent implements OnInit {
       (data: any) => {
         if (data != undefined){
           console.log('Track Data:', data);
+          this.inQueue = true;
         } else {
           console.log("error joining queue");
         }
       }
     );
-    this.inQueue = true;
+    
   }
 
   trackId!: string;
@@ -52,6 +56,25 @@ export class AppComponent implements OnInit {
       },
       (error) => {
         console.error('Error:', error);
+      }
+    );
+  }
+
+  // searchSpotify(event: Event) {
+  //   console.log("search spotify");
+  //   console.log(this.websocketService.searchTracks(this.searchString));
+  // }
+
+  searchSpotify(event: Event) {
+    console.log("search spotify");
+    this.websocketService.searchTracks(this.searchString).subscribe(
+      (data: any) => {
+        this.trackData = data;
+        this.showTable = true;
+      },
+      (error) => {
+        console.error('Error:', error);
+        this.showTable = false;
       }
     );
   }

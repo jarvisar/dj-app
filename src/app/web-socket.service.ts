@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { io } from 'socket.io-client';
+import { HttpClient } from '@angular/common/http';
 import { Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
+const url = 'http://localhost:5000'
 @Injectable({
   providedIn: 'root'
 })
 export class WebSocketService {
   private socket!: Socket;
 
-  constructor() { 
-    this.socket = io('http://localhost:5000');
+  constructor(private http: HttpClient) { 
+    this.socket = io(url);
+  }
+
+  searchTracks(query: string) {
+    let searchUrl = url + '/search?query=' + query;
+    return this.http.get(searchUrl);
   }
 
   createQueue(): Observable<any> {
