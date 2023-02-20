@@ -3,6 +3,7 @@ import { WebSocketService } from './web-socket.service';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+const maxVotes = 10
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +18,10 @@ export class AppComponent implements OnInit {
   inQueue: boolean = false;
   showTable: boolean = false;
   errorMessage: string = '';
-  trackData = [];
+  numVotes = 0;
+  maxVotes = false;
+  queueSongs: any = [];
+  searchData: any = [];
   
   constructor(private websocketService: WebSocketService) {}
 
@@ -25,9 +29,17 @@ export class AppComponent implements OnInit {
 
   createQueue(event: Event) {
     console.log("create");
-    this.websocketService.createQueue().subscribe(
+    try {
+      this.websocketService.createQueue().subscribe(
       (data: any) => {
         this.newlyCreatedCode = data.code;
+        console.log(data.code);
+        if (data.code == ""){
+          this.errorMessage = 'Error creating queue.';
+          setTimeout(() => {
+            this.errorMessage = ''; 
+          }, 3000); 
+        }
         console.log('Code:', data);
         this.errorMessage = '';
       },
@@ -38,7 +50,10 @@ export class AppComponent implements OnInit {
             this.errorMessage = ''; 
           }, 3000); 
       }
-    );
+    )
+    } catch(e) {
+      console.log("test")
+    }
   }
 
   joinQueue(event: Event) {
@@ -47,11 +62,15 @@ export class AppComponent implements OnInit {
       (data: any) => {
         if (data != undefined){
           this.setCode = data.code;
+          this.queueSongs = data.songs;
           this.inputCode = "";
           console.log('Track Data:', data);
           this.inQueue = true;
           this.newlyCreatedCode = "";
           this.errorMessage = '';
+          if(this.numVotes >= 5){
+            this.maxVotes = true;
+          }
         } else {
           console.log("error joining queue");
           this.errorMessage = 'Error joining queue.';
@@ -72,26 +91,33 @@ export class AppComponent implements OnInit {
   leaveQueue(event: Event) {
     this.inQueue = false;
     this.setCode = "";
+    this.queueSongs = [];
     this.newlyCreatedCode = "";
   }
 
   trackId!: string;
   requestedSongs: any = [];
-  addSong(event: Event, trackId: string) {
+  addSong(event: Event, track: any) {
     console.log("add song");
     if(this.setCode != "") {
-      if (this.requestedSongs.includes(trackId)) {
+      if (this.requestedSongs.includes(track.track_id)) {
         console.log("Song has already been requested");
         return;
       }
-      this.websocketService.addSong(this.setCode, "Test", "Test", trackId).subscribe(
+      this.websocketService.addSong(this.setCode, track.song_name, track.artist_name, track.track_id).subscribe(
         (data: any) => {
           console.log('Track Data:', data);
-          this.requestedSongs.push(trackId);
+          this.requestedSongs.push(track.track_id);
+          this.numVotes = this.numVotes + 1;
+          console.log(this.numVotes);
+          if(this.numVotes >= 5){
+            this.maxVotes = true;
+          }
           console.log(this.requestedSongs);
         },
         (error) => {
           console.error('Error:', error);
+          this.errorMessage = 'Error Adding Song'
           setTimeout(() => {
             this.errorMessage = ''; // remove class after animation ends
           }, 3000); // remove class after 5 seconds
@@ -112,7 +138,7 @@ export class AppComponent implements OnInit {
     console.log("search spotify");
     this.websocketService.searchTracks(this.searchString).subscribe(
       (data: any) => {
-        this.trackData = data;
+        this.searchData = data;
         this.showTable = true;
         this.errorMessage = '';
       },

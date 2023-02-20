@@ -21,11 +21,10 @@ export class WebSocketService {
   }
 
   createQueue(): Observable<any> {
-
     return new Observable(observer => {
       this.socket.emit('create');
 
-      this.socket.on('queue_created', (data: any) => {
+      this.socket.once('queue_created', (data: any) => {
         observer.next(data);
       });
 
@@ -35,10 +34,10 @@ export class WebSocketService {
   joinQueue(code: string) {
     return new Observable(observer => {
       this.socket.emit('join', { code });
-      this.socket.on('queue_joined', (data: any) => {
+      this.socket.once('queue_joined', (data: any) => {
         observer.next(data);
       });
-      this.socket.on('invalid_code', (data: any) => {
+      this.socket.once('invalid_code', (data: any) => {
         observer.next(data);
       });
 
@@ -47,16 +46,16 @@ export class WebSocketService {
 
   addSong(code: string, name: string, artist: string, track_id: string) {
     return new Observable(observer => {
+      this.socket.once('song_added', (data: any) => {
+        observer.next(data);
+      });
+      this.socket.once('invalid_code', (data: any) => {
+        observer.next(data);
+      });
       this.socket.emit('add_song', { code, name, artist, track_id });
-      this.socket.on('song_added', (data: any) => {
-        observer.next(data);
-      });
-      this.socket.on('invalid_code', (data: any) => {
-        observer.next(data);
-      });
-
     });
   }
+  
 
   deleteSong(code: string, songId: string) {
     this.socket.emit('delete_song', { code, songId });
