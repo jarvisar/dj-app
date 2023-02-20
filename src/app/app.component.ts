@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
           this.inQueue = true;
         } else {
           console.log("error joining queue");
+          this.inQueue = false;
         }
       }
     );
@@ -48,9 +49,9 @@ export class AppComponent implements OnInit {
   }
 
   trackId!: string;
-  addSong(event: Event) {
+  addSong(event: Event, trackId: string) {
     console.log("add song");
-    this.websocketService.addSong(this.inputCode, "Test", "Test", this.trackId).subscribe(
+    this.websocketService.addSong(this.inputCode, "Test", "Test", trackId).subscribe(
       (data: any) => {
         console.log('Track Data:', data);
       },
