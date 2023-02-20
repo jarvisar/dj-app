@@ -52,15 +52,19 @@
   </div>
 
   <button (click)="createQueue($event)">Create Queue</button>
+  <p *ngIf="newlyCreatedCode != ''">{{newlyCreatedCode}}</p>
   <br>
   <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code">
-  <button (click)="joinQueue($event)">Join Queue</button>
+  <button (click)="joinQueue($event)" [disabled]="inQueue">Join Queue</button>
+  <p *ngIf="setCode != '' && inQueue">In queue {{inputCode}}</p>
+  <br>
+  <button (click)="leaveQueue($event)" [disabled]="!inQueue">Leave Queue</button>
   <br>
   <!-- <input type="text" [(ngModel)]="trackId" placeholder="Track ID">
   <button (click)="addSong($event)" [disabled]="!inQueue">Add Song</button>
   <br> -->
   <input type="text" [(ngModel)]="searchString" placeholder="Search">
-  <button (click)="searchSpotify($event)" >Search</button>
+  <button mat-raised-button (click)="searchSpotify($event)" >Search</button>
 
   <table mat-table *ngIf="showTable" [dataSource]="trackData">
 
@@ -86,11 +90,11 @@
 
     <ng-container matColumnDef="request_button">
       <th mat-header-cell *matHeaderCellDef>Request Song</th>
-      <td mat-cell *matCellDef="let element"><button [disabled]="!inQueue" (click)="addSong($event, element.track_id)">Request</button></td>
+      <td mat-cell *matCellDef="let element"><button [disabled]="!inQueue" mat-raised-button (click)="addSong($event, element.track_id)">Request</button></td>
     </ng-container>
   
-    <tr mat-header-row *matHeaderRowDef="['song_name', 'artist_name', 'album_name', 'track_id', 'request_button']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['song_name', 'artist_name', 'album_name', 'track_id', 'request_button']"></tr>
+    <tr mat-header-row *matHeaderRowDef="['song_name', 'artist_name', 'album_name', 'request_button']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['song_name', 'artist_name', 'album_name', 'request_button']"></tr>
   </table>
   
 

@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'dj-app';
   inputCode!: string;
+  setCode: string = '';
+  newlyCreatedCode: string = '';
   searchString!: string;
   inQueue: boolean = false;
   showTable: boolean = false;
@@ -24,7 +26,8 @@ export class AppComponent implements OnInit {
     console.log("create");
     this.websocketService.createQueue().subscribe(
       (data: any) => {
-        console.log('Track Data:', data);
+        this.newlyCreatedCode = data.code;
+        console.log('Code:', data);
       },
       (error) => {
         console.error('Error:', error);
@@ -37,28 +40,41 @@ export class AppComponent implements OnInit {
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
         if (data != undefined){
+          this.setCode = this.inputCode;
+          this.inputCode = "";
           console.log('Track Data:', data);
           this.inQueue = true;
+          this.newlyCreatedCode = "";
         } else {
           console.log("error joining queue");
           this.inQueue = false;
         }
       }
     );
-    
+  }
+
+  leaveQueue(event: Event) {
+    this.inQueue = false;
+    this.setCode = "";
+    this.newlyCreatedCode = "";
   }
 
   trackId!: string;
   addSong(event: Event, trackId: string) {
     console.log("add song");
-    this.websocketService.addSong(this.inputCode, "Test", "Test", trackId).subscribe(
-      (data: any) => {
-        console.log('Track Data:', data);
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
+    if(this.setCode != "") {
+      this.websocketService.addSong(this.setCode, "Test", "Test", trackId).subscribe(
+        (data: any) => {
+          console.log('Track Data:', data);
+        },
+        (error) => {
+          console.error('Error:', error);
+        }
+      );
+    } else {
+      console.log("Joing a queue before adding a song")
+    }
+   
   }
 
   // searchSpotify(event: Event) {
