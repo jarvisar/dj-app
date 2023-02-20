@@ -51,7 +51,7 @@
 
   </div>
   
-  <button (click)="createQueue($event)">Create Queue</button>
+  <button (click)="createQueue($event)" [disabled]="inQueue">Create Queue</button>
   <p *ngIf="newlyCreatedCode != ''">{{newlyCreatedCode}}</p>
   <br>
   <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code">
@@ -68,7 +68,7 @@
   <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
 
   <span class="table-container">
-    <table mat-table *ngIf="showTable" [dataSource]="searchData">
+    <table mat-table *ngIf="showSearchTable" [dataSource]="searchData">
 
       <ng-container matColumnDef="song_name">
         <th mat-header-cell *matHeaderCellDef>Song Name</th>
@@ -98,7 +98,7 @@
       <tr mat-header-row *matHeaderRowDef="['song_name', 'artist_name', 'album_name', 'request_button']"></tr>
       <tr mat-row *matRowDef="let row; columns: ['song_name', 'artist_name', 'album_name', 'request_button']"></tr>
     </table>
-    <table style="margin-left: 20px;" mat-table *ngIf="inQueue && queueSongs != []" [dataSource]="queueSongs">
+    <table style="margin-left: 20px;" mat-table *ngIf="inQueue && showQueueSongTable" [dataSource]="queueSongs">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{ element.track_id }} </mat-cell>

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from './web-socket.service';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
-const maxVotes = 10
+const maxVotes = 5
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,7 +14,8 @@ export class AppComponent implements OnInit {
   newlyCreatedCode: string = '';
   searchString!: string;
   inQueue: boolean = false;
-  showTable: boolean = false;
+  showSearchTable: boolean = false;
+  showQueueSongTable: boolean = false;
   errorMessage: string = '';
   numVotes = 0;
   maxVotes = false;
@@ -61,15 +60,18 @@ export class AppComponent implements OnInit {
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
         if (data != undefined){
-          this.setCode = data.code;
-          this.queueSongs = data.songs;
-          this.inputCode = "";
+          this.setCode = data.code; // Make sure set code is the returned code
+          this.queueSongs = data.songs; // Pull list of songs in queue
+          if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
+            this.showQueueSongTable = true;
+          }
+          this.inputCode = ""; // Blank input box
           console.log('Track Data:', data);
           this.inQueue = true;
           this.newlyCreatedCode = "";
           this.errorMessage = '';
-          if(this.numVotes >= 5){
-            this.maxVotes = true;
+          if(this.numVotes >= maxVotes){ // Check if user has already voted max amt of times
+            this.maxVotesReached();
           }
         } else {
           console.log("error joining queue");
@@ -93,6 +95,7 @@ export class AppComponent implements OnInit {
     this.setCode = "";
     this.queueSongs = [];
     this.newlyCreatedCode = "";
+    this.showQueueSongTable = false;
   }
 
   trackId!: string;
@@ -110,8 +113,8 @@ export class AppComponent implements OnInit {
           this.requestedSongs.push(track.track_id);
           this.numVotes = this.numVotes + 1;
           console.log(this.numVotes);
-          if(this.numVotes >= 5){
-            this.maxVotes = true;
+          if(this.numVotes >= maxVotes){
+            this.maxVotesReached();
           }
           console.log(this.requestedSongs);
         },
@@ -139,18 +142,26 @@ export class AppComponent implements OnInit {
     this.websocketService.searchTracks(this.searchString).subscribe(
       (data: any) => {
         this.searchData = data;
-        this.showTable = true;
+        this.showSearchTable = true;
         this.errorMessage = '';
       },
       (error) => {
         console.error('Error:', error);
-        this.showTable = false;
+        this.showSearchTable = false;
         this.errorMessage = 'Error searching for tracks.';
           setTimeout(() => {
             this.errorMessage = ''; // remove class after animation ends
           }, 3000); // remove class after 5 seconds
       }
     );
+  }
+
+  maxVotesReached(){
+    this.maxVotes = true;
+    this.errorMessage = 'Maximum Votes Reached.';
+          setTimeout(() => {
+            this.errorMessage = ''; // remove class after animation ends
+          }, 3000); // remove class after 5 seconds
   }
  }
 
