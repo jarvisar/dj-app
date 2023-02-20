@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS
 from dotenv import load_dotenv
 import random
 import string
@@ -8,6 +9,7 @@ import requests
 import os
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
@@ -95,7 +97,7 @@ def join_queue(data):
     code = data['code']
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
-        song_list = [{'id': queue_song.song.track_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
+        song_list = [{'track_id': queue_song.song.track_id, 'song_name': queue_song.song.song_name, 'artist_name': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
         emit('queue_joined', {'code': code, 'songs': song_list})
     else:
         emit('invalid_code')
