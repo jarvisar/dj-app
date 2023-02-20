@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
         if (data != undefined){
-          this.setCode = this.inputCode;
+          this.setCode = data.code;
           this.inputCode = "";
           console.log('Track Data:', data);
           this.inQueue = true;
