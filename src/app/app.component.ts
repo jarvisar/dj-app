@@ -63,12 +63,20 @@ export class AppComponent implements OnInit {
       (data: any) => {
         if (data != undefined){
           this.setCode = data.code; // Make sure set code is the returned code
-          this.queueSongs = data.songs; // Pull list of songs in queue
-          if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
-            this.showQueueSongTable = true;
-          }
           this.inputCode = ""; // Blank input box
           console.log('Track Data:', data);
+          let idList = [];
+          for(let i = 0; i < data.songs.length; i++){
+            idList.push(data.songs[i].track_id);
+          }
+          this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
+            this.queueSongs = trackData;
+            console.log(this.queueSongs);
+            if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
+              this.showQueueSongTable = true;
+            }
+          });
+
           this.inQueue = true;
           this.newlyCreatedCode = "";
           this.errorMessage = '';
@@ -107,14 +115,14 @@ export class AppComponent implements OnInit {
   addSong(event: Event, track: any) {
     console.log("add song");
     if(this.setCode != "") {
-      if (this.requestedSongs.includes(track.track_id)) {
+      if (this.requestedSongs.includes(track.id)) {
         console.log("Song has already been requested");
         return;
       }
-      this.websocketService.addSong(this.setCode, track.song_name, track.artist_name, track.track_id).subscribe(
+      this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
         (data: any) => {
           console.log('Track Data:', data);
-          this.requestedSongs.push(track.track_id);
+          this.requestedSongs.push(track.id);
           this.numVotes = this.numVotes + 1;
           console.log(this.numVotes);
           if(this.numVotes >= maxVotes){

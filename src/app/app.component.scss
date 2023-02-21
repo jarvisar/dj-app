@@ -281,10 +281,45 @@
     display: flex;
   }
 
+.request-button{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  height: 30px;
+  width: 75px;
+  background-color: #0d914f;
+  border-radius: 10px;
+  border: transparent;
+  box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777, 0px 3px 0.5px #777;
+	transform: translateY(-2px);
+	transition: 0.1s transform, 0.1s box-shadow;
+}
+
+.request-button:disabled{
+	filter: brightness(75%);
+	box-shadow: 0px 2px 0.5px #666, 0px 1px 0.5px #666;
+	transform: translateY(-1px);
+  cursor: default;
+}
+
+.request-button:hover{
+  cursor: pointer;
+  box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777;
+	transform: translateY(-1px);
+	cursor: pointer;
+}
+
+.request-button:active{
+	box-shadow: 0px 1px 0.5px #888;
+	transform: translateY(0px);
+	cursor: pointer;
+}
+
 .playlist-container {
   background-color: #282828;
   color: #fff;
   width: 600px;
+  margin: 15px;
   font-family: "Circular Spotify Tx T Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-radius: 20px;
 }
@@ -332,6 +367,8 @@ h1 {
 .song-details {
   display: flex;
   flex-direction: column;
+  position: relative;
+  width: 100%;
 }
 
 .song-title {
