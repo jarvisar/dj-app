@@ -62,8 +62,9 @@ class QueueSong(db.Model):
     request_count = db.Column(db.Integer, default=1)
 
 # Generate random 4 character code
-def generate_code():
+def generate_code(session_id):
     code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    print("Generated " + code + " for " + session_id)
     return code
 
 # Return index html if user visits root
@@ -74,27 +75,35 @@ def index():
 # Create queue
 @socketio.on('create')
 def create_queue(data):
+    print("== Create Queue ==")
+    print(request.args)
     session_id = data['sessionID']
-    code = generate_code()
+    code = generate_code(session_id)
     queue_name = "My Queue"
     queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=session_id) # Record creators session ID
     db.session.add(queue)
     db.session.commit()
     emit('queue_created', {'code': code, 'session_id': session_id})
+    print("======")
 
 # HTTP request for debugging
 @app.route('/create', methods=['POST'])
 def create_queue_api():
+    print("== Create Queue (HTTP) ==")
+    print(request.args)
     code = generate_code()
     queue_name = "Test"
     queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id="omuxrmt33mnetsfirxi2sdsfh4j1c2kv") # Hardcoded session ID for testing
     db.session.add(queue)
     db.session.commit()
     return jsonify({'code': code}), 201
+    print("======")
 
 # Join queue
 @socketio.on('join')
 def join_queue(data):
+    print("== Join Queue ==")
+    print(request.args)
     code = data['code']
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
@@ -102,6 +111,7 @@ def join_queue(data):
         emit('queue_joined', {'code': code, 'songs': song_list, 'session_id': queue.creator_session_id})
     else:
         emit('invalid_code')
+    print("======")
 
 # Add song (used after joining queue)
 @socketio.on('add_song')
@@ -133,6 +143,7 @@ def add_song(data):
         emit('song_added', {'code': code, 'songs': song_list}, broadcast=True)
     else:
         emit('invalid_code')
+    print("======")
 
 # Delete song (only used by queue creators)
 @socketio.on('delete_song')
@@ -153,6 +164,7 @@ def delete_song(data):
             emit('invalid_song')
     else:
         emit('invalid_code')
+    print("======")
 
 # Delete queue (only used by queue creators)
 @socketio.on('delete_queue')
@@ -167,11 +179,12 @@ def delete_queue(data):
         emit('queue_deleted', {'code': queue.queue_code}, broadcast=True)
     else:
         emit('invalid_delete')
+    print("======")
 
 # HTTP Search Endpoint
 @app.route('/search', methods=['GET'])
 def search():
-    print("== Spotify Search ==")
+    print("== Spotify Search (HTTP) ==")
     print(request.args)
     query = request.args.get('query')
     if not query:
@@ -204,10 +217,11 @@ def search():
             tracks.append(track)
 
     return jsonify(tracks)
+    print("======")
 
 @app.route('/get_track_data', methods=['GET'])
 def get_tracks_data():
-    print("== Get Track Data ==")
+    print("== Get Track Data (HTTP) ==")
     print(request.args)
     track_ids = request.args.getlist('track_id')
     track_data = []
@@ -217,6 +231,7 @@ def get_tracks_data():
         if response.status_code == 200:
             track_data.append(response.json())
     return jsonify(track_data)
+    print("======")
 
 if __name__ == '__main__':
     get_auth_header()
