@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from './web-socket.service';
+import { LoadingService } from './loading.service';
 
 const maxVotes = 5
 @Component({
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit {
   searchData: any = [];
   queueSessionId = '';
   
-  constructor(public websocketService: WebSocketService) {}
+  constructor(public loadingService: LoadingService, public websocketService: WebSocketService) {}
 
   ngOnInit() { }
 
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
     }
   }
 
+  songCount: any = [];
   joinQueue(event: Event) {
     console.log("join");
     this.websocketService.joinQueue(this.inputCode).subscribe(
@@ -68,6 +70,7 @@ export class AppComponent implements OnInit {
           let idList = [];
           for(let i = 0; i < data.songs.length; i++){
             idList.push(data.songs[i].track_id);
+            this.songCount.push(data.songs[i].count)
           }
           this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
             this.queueSongs = trackData;
@@ -108,6 +111,7 @@ export class AppComponent implements OnInit {
     this.queueSongs = [];
     this.newlyCreatedCode = "";
     this.showQueueSongTable = false;
+    this.numVotes = 0;
   }
 
   trackId!: string;
@@ -122,11 +126,18 @@ export class AppComponent implements OnInit {
       this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
         (data: any) => {
           console.log('Track Data:', data);
-          this.requestedSongs.push(track.id);
+          this.requestedSongs.push(track.id); // Push requested song's id to array (to prevent user from requesting same song twice)
           this.numVotes = this.numVotes + 1;
           console.log(this.numVotes);
-          if(this.numVotes >= maxVotes){
-            this.maxVotesReached();
+          if(this.queueSessionId == this.websocketService.sessionID){
+            console.log("test")
+            if(this.numVotes >= (maxVotes * 2)){ // Queue creators can add 10 starter songs
+              this.maxVotesReached();
+            }
+          } else {
+            if(this.numVotes >= (maxVotes)){ // Other users can add 5 songs to a queue
+              this.maxVotesReached();
+            }
           }
           console.log(this.requestedSongs);
         },
@@ -143,22 +154,14 @@ export class AppComponent implements OnInit {
     }
   }
 
-
-  // searchSpotify(event: Event) {
-  //   console.log("search spotify");
-  //   console.log(this.websocketService.searchTracks(this.searchString));
-  // }
-
   searchSpotify(event: Event) {
     console.log("search spotify");
     if (this.searchString != undefined && this.searchString != ""){
       this.websocketService.searchTracks(this.searchString).subscribe(
         (data: any) => {
           let idList = []
-          console.log(data);
           for(let i = 0; i < data.length; i++){
-            console.log(data[i].track_id);
-            idList.push(data[i].track_id)
+            idList.push(data[i].track_id) // Get list of IDs
           }
           this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
             this.searchData = trackData;
