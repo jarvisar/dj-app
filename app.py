@@ -75,7 +75,7 @@ def index():
 # Create queue
 @socketio.on('create')
 def create_queue(data):
-    print("== Create Queue ==")
+    print("== Creating Queue ==")
     print(request.args)
     session_id = data['sessionID']
     code = generate_code(session_id)
@@ -90,20 +90,17 @@ def create_queue(data):
 @app.route('/create', methods=['POST'])
 def create_queue_api():
     print("== Create Queue (HTTP) ==")
-    print(request.args)
     code = generate_code()
     queue_name = "Test"
     queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id="omuxrmt33mnetsfirxi2sdsfh4j1c2kv") # Hardcoded session ID for testing
     db.session.add(queue)
     db.session.commit()
     return jsonify({'code': code}), 201
-    print("======")
 
 # Join queue
 @socketio.on('join')
 def join_queue(data):
-    print("== Join Queue ==")
-    print(request.args)
+    print("== Joining Queue " + data['code'] + " ==")
     code = data['code']
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
@@ -111,13 +108,11 @@ def join_queue(data):
         emit('queue_joined', {'code': code, 'songs': song_list, 'session_id': queue.creator_session_id, 'queue_name': queue.queue_name})
     else:
         emit('invalid_code')
-    print("======")
 
 # Add song (used after joining queue)
 @socketio.on('add_song')
 def add_song(data):
-    print("== Add Song ==")
-    print(request.args)
+    print("== Adding Song " + data['track_id'] + " to queue " + data['code'] + " ==")
     code = data['code']
     song_name = data['name']
     artist_name = data['artist']
@@ -143,13 +138,11 @@ def add_song(data):
         emit('song_added', {'code': code, 'songs': song_list}, broadcast=True)
     else:
         emit('invalid_code')
-    print("======")
 
 # Delete song (only used by queue creators)
 @socketio.on('delete_song')
 def delete_song(data):
-    print("== Delete Song ==")
-    print(request.args)
+    print("== Deleting Song " + data['track_id'] + " from queue " + data['code'] + " ==")
     code = data['code']
     song_id = data['song_id']
     queue = Queue.query.filter_by(queue_code=code).first()
@@ -164,13 +157,11 @@ def delete_song(data):
             emit('invalid_song')
     else:
         emit('invalid_code')
-    print("======")
 
 # Delete queue (only used by queue creators)
 @socketio.on('delete_queue')
 def delete_queue(data):
-    print("== Delete Queue ==")
-    print(request.args)
+    print("== Deleting Queue " + data['code'] + " ==")
     code = data['code']
     queue = Queue.query.filter_by(creator_session_id=request.sid, queue_code=code).first()
     if queue:
@@ -179,13 +170,11 @@ def delete_queue(data):
         emit('queue_deleted', {'code': queue.queue_code}, broadcast=True)
     else:
         emit('invalid_delete')
-    print("======")
 
 # HTTP Search Endpoint
 @app.route('/search', methods=['GET'])
 def search():
-    print("== Spotify Search (HTTP) ==")
-    print(request.args)
+    print("== Spotify Search for " + request.args.get('query') + " ==")
     query = request.args.get('query')
     if not query:
         return 'No query parameter provided', 400
@@ -217,21 +206,21 @@ def search():
             tracks.append(track)
 
     return jsonify(tracks)
-    print("======")
 
 @app.route('/get_track_data', methods=['GET'])
 def get_tracks_data():
-    print("== Get Track Data (HTTP) ==")
-    print(request.args)
+    print("== Getting Track Data ==")
     track_ids = request.args.getlist('track_id')
     track_data = []
     for track_id in track_ids:
+        print(track_id)
         params = {'ids': track_id}
         response = requests.get(f'https://api.spotify.com/v1/tracks/{track_id}', headers=AUTH_HEADER)
         if response.status_code == 200:
             track_data.append(response.json())
-    return jsonify(track_data)
     print("======")
+    return jsonify(track_data)
+
 
 if __name__ == '__main__':
     get_auth_header()
