@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   queueSongs: any = [];
   searchData: any = [];
   queueSessionId = '';
+  newQueueName = 'New Queue';
+  currentQueueName = '';
   
   constructor(public loadingService: LoadingService, public websocketService: WebSocketService) {}
 
@@ -30,8 +32,8 @@ export class AppComponent implements OnInit {
 
   createQueue(event: Event) {
     console.log("create");
-    try {
-      this.websocketService.createQueue().subscribe(
+    if(this.newQueueName != '') {
+      this.websocketService.createQueue(this.newQueueName).subscribe(
       (data: any) => {
         this.newlyCreatedCode = data.code;
         console.log(data.code);
@@ -53,8 +55,11 @@ export class AppComponent implements OnInit {
           }, 3000); 
       }
     )
-    } catch(e) {
-      console.log("test")
+    } else {
+      this.errorMessage = 'Name cannot be blank.';
+      setTimeout(() => {
+        this.errorMessage = ''; 
+      }, 3000); 
     }
   }
 
@@ -66,6 +71,7 @@ export class AppComponent implements OnInit {
         if (data != undefined){
           this.setCode = data.code; // Make sure set code is the returned code
           this.inputCode = ""; // Blank input box
+          this.currentQueueName = data.queue_name;
           console.log('Track Data:', data);
           let idList = [];
           for(let i = 0; i < data.songs.length; i++){
@@ -112,6 +118,7 @@ export class AppComponent implements OnInit {
     this.newlyCreatedCode = "";
     this.showQueueSongTable = false;
     this.numVotes = 0;
+    this.requestedSongs = [];
   }
 
   trackId!: string;

@@ -53,10 +53,10 @@ export class WebSocketService {
     return this.http.get(searchUrl + temp);
   }
 
-  createQueue(): Observable<any> {
+  createQueue(queueName: any): Observable<any> {
     let sessionID = this.sessionID;
     return new Observable(observer => {
-      this.socket.emit('create', { sessionID });
+      this.socket.emit('create', { sessionID, queueName });
 
       this.socket.once('queue_created', (data: any) => {
         observer.next(data);
