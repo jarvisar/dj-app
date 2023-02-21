@@ -211,5 +211,7 @@ if __name__ == '__main__':
     get_auth_header()
     with app.app_context():
         db.create_all()
+    print("=== DJ-App Flask Built Successfully ===")
+    print("Starting socketio...")
     socketio.run(app)
-    
+
