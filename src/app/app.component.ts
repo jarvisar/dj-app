@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
           this.currentQueueName = data.queue_name;
           console.log('Track Data:', data);
           let idList = [];
+          this.songCount = [];
           for(let i = 0; i < data.songs.length; i++){
             idList.push(data.songs[i].track_id);
             this.songCount.push(data.songs[i].count)
