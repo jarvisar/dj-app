@@ -79,7 +79,7 @@ def create_queue(data):
     print(request.args)
     session_id = data['sessionID']
     code = generate_code(session_id)
-    queue_name = "My Queue"
+    queue_name = data['queueName']
     queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=session_id) # Record creators session ID
     db.session.add(queue)
     db.session.commit()
@@ -108,7 +108,7 @@ def join_queue(data):
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
         song_list = [{'track_id': queue_song.song.track_id, 'song_name': queue_song.song.song_name, 'artist_name': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
-        emit('queue_joined', {'code': code, 'songs': song_list, 'session_id': queue.creator_session_id})
+        emit('queue_joined', {'code': code, 'songs': song_list, 'session_id': queue.creator_session_id, 'queue_name': queue.queue_name})
     else:
         emit('invalid_code')
     print("======")
