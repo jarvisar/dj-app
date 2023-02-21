@@ -73,13 +73,14 @@ def index():
 
 # Create queue
 @socketio.on('create')
-def create_queue():
+def create_queue(data):
+    session_id = data['sessionID']
     code = generate_code()
     queue_name = "My Queue"
-    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=request.sid) # Record creators session ID
+    queue = Queue(queue_name=queue_name, queue_code=code, creator_session_id=session_id) # Record creators session ID
     db.session.add(queue)
     db.session.commit()
-    emit('queue_created', {'code': code})
+    emit('queue_created', {'code': code, 'session_id': session_id})
 
 # HTTP request for debugging
 @app.route('/create', methods=['POST'])
@@ -98,13 +99,15 @@ def join_queue(data):
     queue = Queue.query.filter_by(queue_code=code).first()
     if queue:
         song_list = [{'track_id': queue_song.song.track_id, 'song_name': queue_song.song.song_name, 'artist_name': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
-        emit('queue_joined', {'code': code, 'songs': song_list})
+        emit('queue_joined', {'code': code, 'songs': song_list, 'session_id': queue.creator_session_id})
     else:
         emit('invalid_code')
 
 # Add song (used after joining queue)
 @socketio.on('add_song')
 def add_song(data):
+    print("== Add Song ==")
+    print(request.args)
     code = data['code']
     song_name = data['name']
     artist_name = data['artist']
@@ -134,6 +137,8 @@ def add_song(data):
 # Delete song (only used by queue creators)
 @socketio.on('delete_song')
 def delete_song(data):
+    print("== Delete Song ==")
+    print(request.args)
     code = data['code']
     song_id = data['song_id']
     queue = Queue.query.filter_by(queue_code=code).first()
@@ -151,9 +156,11 @@ def delete_song(data):
 
 # Delete queue (only used by queue creators)
 @socketio.on('delete_queue')
-# Users can only delete queues they created
-def delete_queue():
-    queue = Queue.query.filter_by(creator_session_id=request.sid).first()
+def delete_queue(data):
+    print("== Delete Queue ==")
+    print(request.args)
+    code = data['code']
+    queue = Queue.query.filter_by(creator_session_id=request.sid, queue_code=code).first()
     if queue:
         db.session.delete(queue)
         db.session.commit()
@@ -164,6 +171,8 @@ def delete_queue():
 # HTTP Search Endpoint
 @app.route('/search', methods=['GET'])
 def search():
+    print("== Spotify Search ==")
+    print(request.args)
     query = request.args.get('query')
     if not query:
         return 'No query parameter provided', 400
@@ -198,6 +207,8 @@ def search():
 
 @app.route('/get_track_data', methods=['GET'])
 def get_tracks_data():
+    print("== Get Track Data ==")
+    print(request.args)
     track_ids = request.args.getlist('track_id')
     track_data = []
     for track_id in track_ids:
