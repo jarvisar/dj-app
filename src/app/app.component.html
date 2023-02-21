@@ -68,36 +68,21 @@
   <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
 
   <span class="table-container">
-    <table mat-table *ngIf="showSearchTable" [dataSource]="searchData">
 
-      <ng-container matColumnDef="song_name">
-        <th mat-header-cell *matHeaderCellDef>Song Name</th>
-        <td mat-cell *matCellDef="let element">{{element.song_name}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="artist_name">
-        <th mat-header-cell *matHeaderCellDef>Artist Name</th>
-        <td mat-cell *matCellDef="let element">{{element.artist_name}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="album_name">
-        <th mat-header-cell *matHeaderCellDef>Album Name</th>
-        <td mat-cell *matCellDef="let element">{{element.album_name}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="track_id">
-        <th mat-header-cell *matHeaderCellDef>Track ID</th>
-        <td mat-cell *matCellDef="let element">{{element.track_id}}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="request_button">
-        <th mat-header-cell *matHeaderCellDef>Request Song</th>
-        <td mat-cell *matCellDef="let element"><button [disabled]="!inQueue || requestedSongs.includes(element.track_id) || maxVotes" mat-raised-button (click)="addSong($event, element)">Request</button></td>
-      </ng-container>
-    
-      <tr mat-header-row *matHeaderRowDef="['song_name', 'artist_name', 'album_name', 'request_button']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['song_name', 'artist_name', 'album_name', 'request_button']"></tr>
-    </table>
+
+    <div *ngIf="showSearchTable" class="playlist-container">
+      <h1>Chill Vibes Playlist</h1>
+      <ul class="playlist">
+        <li *ngFor="let song of searchData" class="song">
+          <div class="song-image"><img src="{{song.album.images[0].url}}"></div>
+          <div class="song-details">
+            <div class="song-title">{{song.name}}</div>
+            <div class="song-artist">{{song.artists.name}}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <table style="margin-left: 20px;" mat-table *ngIf="inQueue && showQueueSongTable" [dataSource]="queueSongs">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>

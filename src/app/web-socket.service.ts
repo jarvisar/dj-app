@@ -42,6 +42,17 @@ export class WebSocketService {
     return this.http.get(searchUrl);
   }
 
+  getTrackData(trackList: any) {
+    console.log(trackList)
+    let searchUrl = url + '/get_track_data?';
+    let temp = ''
+    for(let i = 0; i < trackList.length; i++){
+      temp += ('&track_id=' + trackList[i])
+    }
+    console.log(searchUrl + temp);
+    return this.http.get(searchUrl + temp);
+  }
+
   createQueue(): Observable<any> {
     let sessionID = this.sessionID;
     return new Observable(observer => {

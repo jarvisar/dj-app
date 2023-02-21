@@ -146,7 +146,15 @@ export class AppComponent implements OnInit {
     if (this.searchString != undefined && this.searchString != ""){
       this.websocketService.searchTracks(this.searchString).subscribe(
         (data: any) => {
-          this.searchData = data;
+          let idList = []
+          console.log(data);
+          for(let i = 0; i < data.length; i++){
+            console.log(data[i].track_id);
+            idList.push(data[i].track_id)
+          }
+          this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
+            this.searchData = trackData;
+          });
           this.showSearchTable = true;
           this.errorMessage = '';
         },
@@ -165,6 +173,10 @@ export class AppComponent implements OnInit {
         this.errorMessage = ''; // remove class after animation ends
       }, 3000); // remove class after 5 seconds
     }
+
+  }
+
+  getAlbumArt(){
 
   }
 
