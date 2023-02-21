@@ -218,7 +218,6 @@ def get_tracks_data():
         response = requests.get(f'https://api.spotify.com/v1/tracks/{track_id}', headers=AUTH_HEADER)
         if response.status_code == 200:
             track_data.append(response.json())
-    print("======")
     return jsonify(track_data)
 
 
