@@ -112,6 +112,10 @@ export class AppComponent implements OnInit {
     );
   }
 
+  updateQueueSongList(){
+
+  }
+
   leaveQueue(event: Event) {
     this.inQueue = false;
     this.setCode = "";
@@ -135,6 +139,21 @@ export class AppComponent implements OnInit {
         (data: any) => {
           console.log('Track Data:', data);
           this.requestedSongs.push(track.id); // Push requested song's id to array (to prevent user from requesting same song twice)
+          let idList = [];
+          this.songCount = [];
+          for(let i = 0; i < data.songs.length; i++){
+            idList.push(data.songs[i].id);
+            this.songCount.push(data.songs[i].count)
+          }
+          console.log('Cool stuff:', idList);
+          this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
+            console.log('Cool stuff:', trackData);
+            this.queueSongs = trackData;
+            console.log(this.queueSongs);
+            if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
+              this.showQueueSongTable = true;
+            }
+          });
           this.numVotes = this.numVotes + 1;
           console.log(this.numVotes);
           if(this.queueSessionId == this.websocketService.sessionID){
