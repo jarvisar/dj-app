@@ -11,8 +11,30 @@ const url = 'http://localhost:5000'
 export class WebSocketService {
   private socket!: Socket;
 
+  private SESSION_ID = 'sessionIDCache';
+  private EXPIRY_TIME = 2 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+  public sessionID!: string;
+
   constructor(private http: HttpClient) { 
     this.socket = io(url);
+    let sessionIDCache = localStorage.getItem(this.SESSION_ID);
+    // Check for cached data
+    if (sessionIDCache) {
+      let cacheData = JSON.parse(sessionIDCache);
+      if (cacheData.expiry > Date.now()) {
+        this.sessionID = cacheData.sessionID;
+        console.log(cacheData.sessionID);
+        return;
+      }
+    }
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let sessionID = '';
+    for (let i = 0; i < 20; i++) {
+      sessionID += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    this.sessionID = sessionID;
+    let expiry = Date.now() + this.EXPIRY_TIME;
+    localStorage.setItem(this.SESSION_ID, JSON.stringify({ expiry, sessionID }));
   }
 
   searchTracks(query: string) {
@@ -21,8 +43,9 @@ export class WebSocketService {
   }
 
   createQueue(): Observable<any> {
+    let sessionID = this.sessionID;
     return new Observable(observer => {
-      this.socket.emit('create');
+      this.socket.emit('create', { sessionID });
 
       this.socket.once('queue_created', (data: any) => {
         observer.next(data);
@@ -61,8 +84,8 @@ export class WebSocketService {
     this.socket.emit('delete_song', { code, songId });
   }
 
-  deleteQueue() {
-    this.socket.emit('delete_queue');
+  deleteQueue(code: string) {
+    this.socket.emit('delete_queue', { code });
   }
 
   onQueueCreated(): Observable<any> {

@@ -56,7 +56,7 @@
   <br>
   <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code">
   <button (click)="joinQueue($event)" [disabled]="inQueue">Join Queue</button>
-  <p *ngIf="setCode != '' && inQueue">In queue {{setCode}}</p>
+  <p *ngIf="setCode != '' && inQueue">In queue {{setCode}}</p><p *ngIf="queueSessionId == websocketService.sessionID"> You made this queue!</p>
   <br>
   <button (click)="leaveQueue($event)" [disabled]="!inQueue">Leave Queue</button>
   <br>

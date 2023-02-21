@@ -21,8 +21,9 @@ export class AppComponent implements OnInit {
   maxVotes = false;
   queueSongs: any = [];
   searchData: any = [];
+  queueSessionId = '';
   
-  constructor(private websocketService: WebSocketService) {}
+  constructor(public websocketService: WebSocketService) {}
 
   ngOnInit() { }
 
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
           setTimeout(() => {
             this.errorMessage = ''; 
           }, 3000); 
+        } else {
         }
         console.log('Code:', data);
         this.errorMessage = '';
@@ -70,6 +72,8 @@ export class AppComponent implements OnInit {
           this.inQueue = true;
           this.newlyCreatedCode = "";
           this.errorMessage = '';
+          this.queueSessionId = data.session_id;
+          console.log(this.queueSessionId);
           if(this.numVotes >= maxVotes){ // Check if user has already voted max amt of times
             this.maxVotesReached();
           }
