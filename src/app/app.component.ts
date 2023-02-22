@@ -63,7 +63,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  songCount: any = [];
   joinQueue(event: Event) {
     console.log("join");
     this.websocketService.joinQueue(this.inputCode).subscribe(
@@ -71,21 +70,19 @@ export class AppComponent implements OnInit {
         if (data != undefined){
           this.setCode = data.code; // Make sure set code is the returned code
           this.inputCode = ""; // Blank input box
-          this.currentQueueName = data.queue_name;
-          console.log('Track Data:', data);
+          this.currentQueueName = data.queue_name; // Set queue name
           let idList = [];
-          this.songCount = [];
           for(let i = 0; i < data.songs.length; i++){
-            idList.push(data.songs[i].track_id);
-            data.songs[i].count = data.songs[i].count;
+            idList.push(data.songs[i].track_id); // Create a list of all track IDs
+            data.songs[i].count = data.songs[i].count; // Add count
           }
-          this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
+          this.websocketService.getTrackData(idList).subscribe((trackData: any) => { // Get track data from spotify
             for (let i = 0; i < trackData.length; i++) {
               let song = trackData[i];
               let count = data.songs.find((s: any) => s.track_id === song.id)?.count;
-              song.count = count || 0;
+              song.count = count || 0; // Add count to track data 
             }
-            this.queueSongs = trackData;
+            this.queueSongs = trackData.sort((a: any, b: any) => b.count - a.count); // Sort data by count
             console.log(this.queueSongs);
             if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
               this.showQueueSongTable = true;
@@ -131,7 +128,6 @@ export class AppComponent implements OnInit {
     this.requestedSongs = [];
   }
 
- trackId!: string;
 requestedSongs: any = [];
 addSong(event: Event, track: any) {
   console.log("add song");
@@ -154,7 +150,7 @@ addSong(event: Event, track: any) {
             let count = data.songs.find((s: any) => s.id === song.id)?.count;
             song.count = count || 0;
           }
-          this.queueSongs = trackData;
+          this.queueSongs = trackData.sort((a: any, b: any) => b.count - a.count);
           if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
             this.showQueueSongTable = true;
           }
