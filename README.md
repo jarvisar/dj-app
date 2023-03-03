@@ -22,13 +22,15 @@ TODO:
 * Add "remove song" and "delete queue" buttons for queue creators
 * Add error handling for when the backend server is down or unable to connect
 * Add backup code for queue creators to use if sessionID doesn't work (generate extra four digit code for every queue; optional for users)
-* Add private queue feature; need another four digit code to join?
 * Split up code into components instead of using app component for everything
 * Add query parameters to URL to allow users to join queues by visiting a link (i.e. localhost:4200/?code=1111/ to automatically join queue 1111.)
 * Work on mobile app
 
 Planning:
 
-* Guest DJ feature? Queue creators can add other queue creators to queues and grant access? 
-* Customizable queue settings. Allow queue creators to set max number of requested songs allowed, # of min requests needed, etc.
+* Guest DJ feature? Queue creators can add other queue creators to queues and grant access? Can always just share backup code from above.
+* Customizable queue settings. Allow queue creators to set max number of requested songs allowed, # of min requests needed, etc?
 * Upvote/downvote songs instead of request? Can keep a score to let users upvote songs they like and downvote songs they dislike (maybe everybody can add up to two new songs to queues and then can upvote or downvote any song already in the queue instead of the current 5 request limit regardless if adding new song or requesting existing song)
+* Add private queue feature; need another four digit code to join? Don't want to add too many four-character codes. Already one code for queue itself and another backup code, most likely want to avoid adding a third code.
+
+I wanted to avoid using accounts and logins due to people most likely deleting the app as soon as they leave the party/event. Also don't want to force users to sign up for anything during a social gathering or event where this app might be used.
