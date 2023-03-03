@@ -30,18 +30,23 @@ export class AppComponent implements OnInit {
 
   ngOnInit() { }
 
-  checkConnection(){
+  checkConnection(): Boolean{
     if (this.websocketService.errorMsg != undefined){
       this.errorMessage = this.websocketService.errorMsg;
-          setTimeout(() => {
-            this.errorMessage = ''; 
-          }, 3000); 
+      setTimeout(() => {
+        this.errorMessage = ''; 
+      }, 3000); 
+      return true;
+    } else {
+      return false;
     }
   }
 
   createQueue(event: Event) {
     console.log("create");
-    this.checkConnection();
+    if (this.checkConnection()){
+      return;
+    }
     if(this.newQueueName != '') {
       this.websocketService.createQueue(this.newQueueName).subscribe(
       (data: any) => {
@@ -77,7 +82,9 @@ export class AppComponent implements OnInit {
 
   joinQueue(event?: Event) {
     console.log("join");
-    this.checkConnection();
+    if (this.checkConnection()){
+      return;
+    }
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
         if (data != undefined){
@@ -141,80 +148,84 @@ export class AppComponent implements OnInit {
     this.maxVotes = false;
   }
 
-requestedSongs: any = [];
-addSong(event: Event, track: any) {
-  console.log("add song");
-  this.checkConnection();
-  let isTrackInQueue = false;
-  let index = 0;
-  if (this.setCode) {
-    if (this.requestedSongs.includes(track.id)) {
-      console.log("Song has already been requested");
+  requestedSongs: any = [];
+  addSong(event: Event, track: any) {
+    console.log("add song");
+    if (this.checkConnection()){
       return;
     }
-    for (let i = 0; i < this.queueSongs.length; i++) {
-      if (this.queueSongs[i].id === track.id) { // Check if song is already in queueSongs
-        isTrackInQueue = true;
-        index = i;
-        break;
+    let isTrackInQueue = false;
+    let index = 0;
+    if (this.setCode) {
+      if (this.requestedSongs.includes(track.id)) {
+        console.log("Song has already been requested");
+        return;
       }
-    }
-    if (isTrackInQueue) { // already in queueSongs, so just update count
-      this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
-        ({ songs }: any) => {
-          this.requestedSongs.push(track.id);
-          this.queueSongs[index].count += 1; // Only update count client-side
-          this.numVotes++;
-          this.queueSongs = this.queueSongs.sort((a: any, b: any) => b.count - a.count);
-        },
-        (error) => {
-          console.error('Error:', error);
-          this.errorMessage = 'Error Adding Song'
-          setTimeout(() => {
-            this.errorMessage = ''; // remove class after animation ends
-          }, 3000); // remove class after 5 seconds
+      for (let i = 0; i < this.queueSongs.length; i++) {
+        if (this.queueSongs[i].id === track.id) { // Check if song is already in queueSongs
+          isTrackInQueue = true;
+          index = i;
+          break;
         }
-      );
-    } else { // song not in queueSongs, need to add and update queueSongs with new song
-      this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
-        ({ songs }: any) => {
-          this.requestedSongs.push(track.id);
-          this.websocketService.getTrackData([track.id]).subscribe((trackData: any) => {
-            console.log(trackData)
-            trackData[0].count = 1; // song not in queue so must be first request
-            this.queueSongs.push(trackData[0]);
-            this.showQueueSongTable = true; // show table just in case this is first song added to queue
-          });
-          this.numVotes++;
-          this.queueSongs = this.queueSongs.sort((a: any, b: any) => b.count - a.count);
-        },
-        (error) => {
-          console.error('Error:', error);
-          this.errorMessage = 'Error Adding Song'
-          setTimeout(() => {
-            this.errorMessage = ''; // remove class after animation ends
-          }, 3000); // remove class after 5 seconds
+      }
+      if (isTrackInQueue) { // already in queueSongs, so just update count
+        this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
+          ({ songs }: any) => {
+            this.requestedSongs.push(track.id);
+            this.queueSongs[index].count += 1; // Only update count client-side
+            this.numVotes++;
+            this.queueSongs = this.queueSongs.sort((a: any, b: any) => b.count - a.count);
+          },
+          (error) => {
+            console.error('Error:', error);
+            this.errorMessage = 'Error Adding Song'
+            setTimeout(() => {
+              this.errorMessage = ''; // remove class after animation ends
+            }, 3000); // remove class after 5 seconds
+          }
+        );
+      } else { // song not in queueSongs, need to add and update queueSongs with new song
+        this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
+          ({ songs }: any) => {
+            this.requestedSongs.push(track.id);
+            this.websocketService.getTrackData([track.id]).subscribe((trackData: any) => {
+              console.log(trackData)
+              trackData[0].count = 1; // song not in queue so must be first request
+              this.queueSongs.push(trackData[0]);
+              this.showQueueSongTable = true; // show table just in case this is first song added to queue
+            });
+            this.numVotes++;
+            this.queueSongs = this.queueSongs.sort((a: any, b: any) => b.count - a.count);
+          },
+          (error) => {
+            console.error('Error:', error);
+            this.errorMessage = 'Error Adding Song'
+            setTimeout(() => {
+              this.errorMessage = ''; // remove class after animation ends
+            }, 3000); // remove class after 5 seconds
+          }
+        );
+      }
+      if(this.queueSessionId == this.websocketService.sessionID){
+        if(this.numVotes >= (maxVotes * 2)){ // Queue creators can add 10 starter songs
+          this.maxVotesReached();
         }
-      );
-    }
-    if(this.queueSessionId == this.websocketService.sessionID){
-      if(this.numVotes >= (maxVotes * 2)){ // Queue creators can add 10 starter songs
-        this.maxVotesReached();
+      } else {
+        if(this.numVotes >= (maxVotes)){ // Other users can add 5 songs to a queue
+          this.maxVotesReached();
+        }
       }
     } else {
-      if(this.numVotes >= (maxVotes)){ // Other users can add 5 songs to a queue
-        this.maxVotesReached();
-      }
+      console.log("Join a queue before adding a song");
     }
-  } else {
-    console.log("Join a queue before adding a song");
   }
-}
 
 
   searchSpotify(event: Event) {
     console.log("search spotify");
-    this.checkConnection();
+    if (this.checkConnection()){
+      return;
+    }
     if (this.searchString != undefined && this.searchString != ""){
       this.websocketService.searchTracks(this.searchString).subscribe(
         (data: any) => {
