@@ -12,11 +12,16 @@ The web app was built using the Angular framework.
 
 Still need a name. Current possible names:
 
-> PartyLine
+* PartyLine
+* DJProQ
+* PartyQ
+* QuedUp
 
-> DJProQ
+TODO:
 
-> PartyQ
-
-> QuedUp
-
+* Add "remove song" and "delete queue" buttons for queue creators
+* Add error handling for when the backend server is down or unable to connect
+* Add backup code for queue creators to use if sessionID doesn't work (generate extra four digit code for every queue; optional for users)
+* Add private queue feature; need another four digit code to join?
+* Split up code into components instead of using app component for everything
+* Work on mobile app
