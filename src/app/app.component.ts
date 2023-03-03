@@ -131,31 +131,26 @@ export class AppComponent implements OnInit {
 requestedSongs: any = [];
 addSong(event: Event, track: any) {
   console.log("add song");
-  if(this.setCode != "") {
+  if (this.setCode) {
     if (this.requestedSongs.includes(track.id)) {
       console.log("Song has already been requested");
       return;
     }
     this.websocketService.addSong(this.setCode, track.name, track.artists[0].name, track.id).subscribe(
-      (data: any) => {
-        this.requestedSongs.push(track.id); // Push requested song's id to array (to prevent user from requesting same song twice)
-        let idList = [];
-        for(let i = 0; i < data.songs.length; i++){
-          idList.push(data.songs[i].id);
-          data.songs[i].count = data.songs[i].count;
-        }
+      ({ songs }: any) => {
+        this.requestedSongs.push(track.id);
+        const idList = songs.map((song: any) => song.id);
         this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
-          for (let i = 0; i < trackData.length; i++) {
-            let song = trackData[i];
-            let count = data.songs.find((s: any) => s.id === song.id)?.count;
-            song.count = count || 0;
-          }
+          trackData.forEach((song: any) => {
+            const { count = 0 } = songs.find((s: any) => s.id === song.id) || {};
+            song.count = count;
+          });
           this.queueSongs = trackData.sort((a: any, b: any) => b.count - a.count);
-          if (Object.keys(this.queueSongs).length != 0){ // Show queue song table only if not empty
+          if (this.queueSongs.length !== 0) {
             this.showQueueSongTable = true;
           }
         });
-        this.numVotes = this.numVotes + 1;
+        this.numVotes++;
         console.log(this.numVotes);
         if(this.queueSessionId == this.websocketService.sessionID){
           console.log("test")
