@@ -25,3 +25,9 @@ TODO:
 * Add private queue feature; need another four digit code to join?
 * Split up code into components instead of using app component for everything
 * Work on mobile app
+
+Planning:
+
+* Guest DJ feature? Queue creators can add other queue creators to queues and grant access? 
+* Customizable queue settings. Allow queue creators to set max number of requested songs allowed, # of min requests needed, etc.
+* Upvote/downvote songs instead of request? Can keep a score to let users upvote songs they like and downvote songs they dislike (maybe everybody can add up to two new songs to queues and then can upvote or downvote any song already in the queue instead of the current 5 request limit regardless if adding new song or requesting existing song)
