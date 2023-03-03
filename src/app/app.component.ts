@@ -172,6 +172,7 @@ addSong(event: Event, track: any) {
             console.log(trackData)
             trackData[0].count = 1; // song not in queue so must be first request
             this.queueSongs.push(trackData[0]);
+            this.showQueueSongTable = true; // show table just in case this is first song added to queue
           });
           this.numVotes++;
           this.queueSongs = this.queueSongs.sort((a: any, b: any) => b.count - a.count);
