@@ -10,13 +10,16 @@ const url = 'http://localhost:5000'
 })
 export class WebSocketService {
   private socket!: Socket;
-
+  public errorMsg: any;
   private SESSION_ID = 'sessionIDCache';
   private EXPIRY_TIME = 2 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
   public sessionID!: string;
 
   constructor(private http: HttpClient) { 
     this.socket = io(url);
+    this.socket.on("connect_error", (error) => {
+      this.errorMsg = "Unable to connect to server.";
+    });
     let sessionIDCache = localStorage.getItem(this.SESSION_ID);
     // Check for cached data
     if (sessionIDCache) {
@@ -55,6 +58,7 @@ export class WebSocketService {
 
   createQueue(queueName: any): Observable<any> {
     let sessionID = this.sessionID;
+    console.log("hi!")
     return new Observable(observer => {
       this.socket.emit('create', { sessionID, queueName });
 

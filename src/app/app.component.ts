@@ -30,8 +30,18 @@ export class AppComponent implements OnInit {
 
   ngOnInit() { }
 
+  checkConnection(){
+    if (this.websocketService.errorMsg != undefined){
+      this.errorMessage = this.websocketService.errorMsg;
+          setTimeout(() => {
+            this.errorMessage = ''; 
+          }, 3000); 
+    }
+  }
+
   createQueue(event: Event) {
     console.log("create");
+    this.checkConnection();
     if(this.newQueueName != '') {
       this.websocketService.createQueue(this.newQueueName).subscribe(
       (data: any) => {
@@ -67,6 +77,7 @@ export class AppComponent implements OnInit {
 
   joinQueue(event?: Event) {
     console.log("join");
+    this.checkConnection();
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
         if (data != undefined){
@@ -95,7 +106,6 @@ export class AppComponent implements OnInit {
           this.newlyCreatedCode = "";
           this.errorMessage = '';
           this.queueSessionId = data.session_id;
-          console.log(this.queueSessionId);
           if(this.numVotes >= maxVotes){ // Check if user has already voted max amt of times
             this.maxVotesReached();
           }
@@ -134,6 +144,7 @@ export class AppComponent implements OnInit {
 requestedSongs: any = [];
 addSong(event: Event, track: any) {
   console.log("add song");
+  this.checkConnection();
   let isTrackInQueue = false;
   let index = 0;
   if (this.setCode) {
@@ -203,6 +214,7 @@ addSong(event: Event, track: any) {
 
   searchSpotify(event: Event) {
     console.log("search spotify");
+    this.checkConnection();
     if (this.searchString != undefined && this.searchString != ""){
       this.websocketService.searchTracks(this.searchString).subscribe(
         (data: any) => {
