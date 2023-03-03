@@ -32,5 +32,6 @@ Planning:
 * Customizable queue settings. Allow queue creators to set max number of requested songs allowed, # of min requests needed, etc?
 * Upvote/downvote songs instead of request? Can keep a score to let users upvote songs they like and downvote songs they dislike (maybe everybody can add up to two new songs to queues and then can upvote or downvote any song already in the queue instead of the current 5 request limit regardless if adding new song or requesting existing song)
 * Add private queue feature; need another four digit code to join? Don't want to add too many four-character codes. Already one code for queue itself and another backup code, most likely want to avoid adding a third code.
+* Song suggestions: Suggest similar songs based on the current song being played or based on the songs in the queue
 
 I wanted to avoid using accounts and logins due to people most likely deleting the app as soon as they leave the party/event. Also don't want to force users to sign up for anything during a social gathering or event where this app might be used.
