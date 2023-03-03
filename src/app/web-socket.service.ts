@@ -20,6 +20,9 @@ export class WebSocketService {
     this.socket.on("connect_error", (error) => {
       this.errorMsg = "Unable to connect to server.";
     });
+    this.socket.on("connect", () => {
+      this.errorMsg = undefined;
+    });
     let sessionIDCache = localStorage.getItem(this.SESSION_ID);
     // Check for cached data
     if (sessionIDCache) {
@@ -111,7 +114,6 @@ export class WebSocketService {
     });
   }
   
-
   onQueueJoined() {
     return new Observable((observer) => {
       this.socket.on('queue_joined', (data: any) => {
