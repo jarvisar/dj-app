@@ -72,4 +72,9 @@ export class SpotifySearchComponent implements OnInit {
     this.router.navigate(['/queue']); // Navigate to queue
   }
 
+  backButton(event: Event){
+    this.authGuard.allowNavigationToQueue(); // Allow router navigation to queue
+    this.router.navigate(['/queue']); // Navigate to queue
+  }
+
 }
