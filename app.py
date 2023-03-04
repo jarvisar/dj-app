@@ -231,13 +231,13 @@ def get_tracks_data():
     print("== Getting Track Data ==")
     track_ids = request.args.getlist('track_id')
     track_data = []
+    tracklist = ""
     for track_id in track_ids:
         print(track_id)
         params = {'ids': track_id}
-        response = requests.get(f'https://api.spotify.com/v1/tracks/{track_id}', headers=AUTH_HEADER)
-        if response.status_code == 200:
-            track_data.append(response.json())
-    return jsonify(track_data)
+        tracklist += (track_id + "%2C") 
+    response = requests.get(f'https://api.spotify.com/v1/tracks?ids={tracklist[:-3]}', headers=AUTH_HEADER)
+    return response.json()
 
 
 if __name__ == '__main__':
