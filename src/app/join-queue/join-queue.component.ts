@@ -12,4 +12,8 @@ export class JoinQueueComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  joinQueue(){
+    
+  }
+
 }

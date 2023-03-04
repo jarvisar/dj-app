@@ -37,7 +37,7 @@ import { Route, RouterModule, RouteReuseStrategy } from '@angular/router';
     MatProgressSpinnerModule,
     RouterModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, { provide: RouteReuseStrategy, useClass: CustomReuseStrategy}, HttpClientModule],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, { provide: RouteReuseStrategy, useClass: CustomReuseStrategy}, HttpClientModule, JoinQueueComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
