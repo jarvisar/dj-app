@@ -62,6 +62,8 @@ export class JoinQueueComponent implements OnInit {
 
           this.queue.inQueue = true;
           this.errorMessage = '';
+          console.log(data.session_id)
+          console.log(this.websocketService.sessionID)
           this.queue.queueSessionId = data.session_id;
           // if(this.numVotes >= maxVotes){ // Check if user has already voted max amt of times
           //   this.maxVotesReached();

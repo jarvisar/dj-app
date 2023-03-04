@@ -1,6 +1,9 @@
-<h1>New Queue</h1>
+<h1 style="text-align: center;">New Queue</h1>
 <div class="create-queue-container">
     <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name" class="input">
-    <button (click)="createQueue($event)" [disabled]="queue.inQueue" class="input-button">Create Queue</button>
+    <br>
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
+        <button (click)="createQueue($event)" [disabled]="queue.inQueue" class="input-button">Create Queue</button>
+    </div>
   </div>
   <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
