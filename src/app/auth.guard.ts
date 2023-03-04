@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const url = state.url;
-    if (!this.allowNavigation && url === '/queue') {
+    if (!this.allowNavigation && (url === '/queue' || url === '/search')) {
       this.router.navigateByUrl('/');
       return false;
     }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthGuard } from '../auth.guard';
 import { LoadingService } from '../loading.service';
 import { QueueService } from '../queue.service';
 import { WebSocketService } from '../web-socket.service';
@@ -13,7 +15,7 @@ export class QueueViewComponent implements OnInit {
   errorMessage: any;
   public maxVotes = false;
 
-  constructor(public websocketService: WebSocketService, public queue: QueueService, public loadingService: LoadingService) { }
+  constructor(public websocketService: WebSocketService, public queue: QueueService, public loadingService: LoadingService, private router: Router, private authGuard: AuthGuard) { }
 
   ngOnInit(): void {
   }
@@ -98,5 +100,10 @@ export class QueueViewComponent implements OnInit {
     } else {
       console.log("Join a queue before adding a song");
     }
+  }
+
+  spotifySearch(event: Event){
+    this.authGuard.allowNavigationToQueue(); // Allow router navigation to queue
+    this.router.navigate(['/search']); // Navigate to queue
   }
 }
