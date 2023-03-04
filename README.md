@@ -24,6 +24,7 @@ TODO:
 * Add query parameters to URL to allow users to join queues by visiting a link (i.e. localhost:4200/?code=1111/ to automatically join queue 1111.)
 * Allow queue creators to blacklist specific tracks so users cannot add it to the queue
 * Add refresh button to queue view to reload queue song list (optimize so it only updates the counts of existing songs but gets Spotify track data for new songs? Can compare track IDs in current queue song list to updated queue song list)
+* Create animations for routing between components
 * Work on mobile app
 
 Planning:
