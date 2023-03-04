@@ -6,15 +6,21 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) {
-  }
+  private allowNavigation = false;
+
+  constructor(private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const url = state.url;
-    if (url === '/queue' || url === '/search') {
+    if (!this.allowNavigation && url === '/queue') {
       this.router.navigateByUrl('/');
       return false;
     }
+    this.allowNavigation = false;
     return true;
+  }
+
+  allowNavigationToQueue() {
+    this.allowNavigation = true;
   }
 }
