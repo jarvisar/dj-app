@@ -11,7 +11,7 @@ import { WebSocketService } from '../web-socket.service';
 export class JoinQueueComponent implements OnInit {
 
   errorMessage = '';
-  inputCode!: string;
+  inputCode: string = '';
 
   constructor(public websocketService: WebSocketService, public queue: QueueService, private router: Router) { }
 
@@ -37,6 +37,7 @@ export class JoinQueueComponent implements OnInit {
     }
     this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
+        console.log(data)
         if (data != undefined){
           this.queue.setCode = data.code; // Make sure set code is the returned code
           this.inputCode = ""; // Blank input box

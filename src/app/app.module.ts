@@ -17,6 +17,7 @@ import { SpotifySearchComponent } from './spotify-search/spotify-search.componen
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon'
 import { Route, RouterModule, RouteReuseStrategy } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { Route, RouterModule, RouteReuseStrategy } from '@angular/router';
     RouterModule,
     MatIconModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, HttpClientModule, JoinQueueComponent],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, HttpClientModule, JoinQueueComponent, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
