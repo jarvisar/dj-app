@@ -1,6 +1,6 @@
 <h1 style="text-align: center;">Join Queue</h1>
 <div class="join-queue-container">
-    <input type="text" [(ngModel)]="inputCode" class="code">
+    <input type="text" [(ngModel)]="inputCode" class="code" onfocus="this.placeholder=''" onBlur="this.placeholder='Queue Code'" [placeholder]="'Queue Code'">
     <br>
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
         <button (click)="joinQueue($event)" [disabled]="queue.inQueue" class="input-button" [disabled]="inputCode.length != 4">Join Queue</button>
