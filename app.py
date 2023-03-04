@@ -4,6 +4,8 @@ from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_caching import Cache
+from geventwebsocket.handler import WebSocketHandler
+from gevent.pywsgi import WSGIHandler, WSGIServer
 import random
 import string
 import requests
@@ -249,7 +251,8 @@ if __name__ == '__main__':
         db.create_all()
     print("=== DJ-App Flask Built Successfully ===")
     print("Starting socketio...")
-    socketio.run(app)
+    http_server = WSGIServer(('', 5000), app, handler_class=WebSocketHandler)
+    http_server.serve_forever()
     # Start token refresh thread
 
 
