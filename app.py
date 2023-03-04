@@ -49,9 +49,12 @@ def get_auth_header():
         TOKEN_EXPIRATION_TIME = time.time() + response.json()["expires_in"]
     return AUTH_HEADER
 
-# Function to refresh token every hour
 def refresh_token():
     global AUTH_HEADER, TOKEN_EXPIRATION_TIME
+
+    # Set AUTH_HEADER and TOKEN_EXPIRATION_TIME to None before the first refresh
+    AUTH_HEADER = None
+    TOKEN_EXPIRATION_TIME = 3600
 
     while True:
         get_auth_header()
