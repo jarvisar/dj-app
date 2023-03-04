@@ -251,6 +251,4 @@ if __name__ == '__main__':
     token_thread.start()
     socketio.run(app)
     # Start token refresh thread
-else:
-    refresh_token()
 
