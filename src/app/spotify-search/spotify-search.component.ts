@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { AuthGuard } from '../auth.guard';
 import { QueueViewComponent } from '../queue-view/queue-view.component';
 import { QueueService } from '../queue.service';
 import { WebSocketService } from '../web-socket.service';
@@ -15,7 +16,7 @@ export class SpotifySearchComponent implements OnInit {
   searchString!: string;
   searchData: any = [];
 
-  constructor(public websocketService: WebSocketService, public queue: QueueService, public queueView: QueueViewComponent, private router: Router) { }
+  constructor(public websocketService: WebSocketService, public queue: QueueService, public queueView: QueueViewComponent, private router: Router, private authGuard: AuthGuard) { }
 
   ngOnInit(): void {
   }
@@ -67,7 +68,8 @@ export class SpotifySearchComponent implements OnInit {
 
   addSong(event: Event, song: any){
     this.queueView.addSong(event, song);
-    this.router.navigate(['/queue']); // Route user to queue view component (song list)
+    this.authGuard.allowNavigationToQueue(); // Allow router navigation to queue
+    this.router.navigate(['/queue']); // Navigate to queue
   }
 
 }

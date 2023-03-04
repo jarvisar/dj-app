@@ -1,7 +1,7 @@
 <h1>Queue Song List</h1>
 <div class="playlist-container">
     <div class="sticky-header">
-      <h1>{{queue.currentQueueName}}</h1>
+      <h1>{{queue.currentQueueName}}  {{queue.setCode}}</h1>
     </div>
     <ul class="playlist">
       <li *ngFor="let song of queue.queueSongs, let i = index" class="song">

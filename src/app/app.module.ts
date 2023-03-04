@@ -39,7 +39,7 @@ import { AuthGuard } from './auth.guard';
     RouterModule,
     MatIconModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, HttpClientModule, JoinQueueComponent, AuthGuard],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, HttpClientModule, JoinQueueComponent, AuthGuard, QueueViewComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
