@@ -6,7 +6,7 @@ This app is a collaborative queue management system designed for DJs and hosts a
 
 - Collaborative queue management
 - Unique four-digit queue codes
-- Song requests from mobile or web browser
+- Song requests from mobile app or web browser
 - Spotify API integration for song search
 - Tracks number of requests for each song
 - Creates a crowd-sourced playlist for the DJ to play
@@ -14,7 +14,7 @@ This app is a collaborative queue management system designed for DJs and hosts a
 - Conditional HTML rendering based on user status
 - Support for multiple devices using backup codes (plan to implement)
 
-## Technologies Used
+## Stack
 
 - Flask
 - Python
