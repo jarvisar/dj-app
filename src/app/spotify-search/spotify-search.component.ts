@@ -46,7 +46,7 @@ export class SpotifySearchComponent implements OnInit {
             idList.push(data[i].track_id) // Get list of IDs
           }
           this.websocketService.getTrackData(idList).subscribe((trackData: any) => {
-            this.searchData = trackData;
+            this.searchData = trackData.tracks;
           });
           this.errorMessage = '';
         },
