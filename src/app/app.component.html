@@ -5,23 +5,23 @@
     <div class="input-container" >
       <div class="create-queue-container">
         <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name">
-        <button (click)="createQueue($event)" [disabled]="inQueue">Create Queue</button>
+        <button (click)="createQueue($event)" [disabled]="inQueue" class="input-button">Create Queue</button>
         <p *ngIf="newlyCreatedCode != ''">{{newlyCreatedCode}}</p>
       </div>
       <br>
       <div class="join-queue-container">
         <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code">
-        <button (click)="joinQueue($event)" [disabled]="inQueue">Join Queue</button>
-        <p *ngIf="setCode != '' && inQueue">In queue {{setCode}}</p><p *ngIf="queueSessionId == websocketService.sessionID && setCode != '' && inQueue"> You made this queue!</p>
+        <button (click)="joinQueue($event)" [disabled]="inQueue" class="input-button">Join Queue</button>
+        <div style="background-color: #fff; border-radius: 5px; padding: 5px;" *ngIf="setCode != '' && inQueue"><p *ngIf="setCode != '' && inQueue">In queue {{setCode}}</p><p *ngIf="queueSessionId == websocketService.sessionID && setCode != '' && inQueue"> You made this queue!</p></div>
       </div>
       <br>
       <div class="leave-queue-container"> 
-        <button (click)="leaveQueue($event)" [disabled]="!inQueue">Leave Queue</button>
+        <button (click)="leaveQueue($event)" [disabled]="!inQueue" class="input-button">Leave Queue</button>
       </div>
       <br>
       <div class="search-spotify-container">
         <input type="text" [(ngModel)]="searchString" placeholder="Search">
-        <button mat-raised-button (click)="searchSpotify($event)" [disabled]="searchString == undefined || searchString == ''">Search</button>
+        <button mat-raised-button (click)="searchSpotify($event)" [disabled]="searchString == undefined || searchString == ''" class="input-button">Search</button>
       </div>
     </div>
   
