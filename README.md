@@ -9,3 +9,5 @@ When a user requests a song, the Flask Python backend adds it to the queue store
 To ensure that only the creator of a queue can delete the queue or its songs, the Angular app generates a random string which is stored in the user's local storage as cached data and is passed to the backend when creating a queue. This string is then stored in the SQL database as the creatorID. When the backend sends a specific queue's data to the user's app, the app verifies the user as the queue owner by comparing the string cached in the local storage to the creatorID from the queue. If they match, the current user is the queue owner. This enables the app to conditionally render HTML elements such as "Delete Song" and "Delete Queue" to the queue owner. Also plan to implement optional 4-character backup codes if a user is not given "Creator" status due to cache clearing or using the app on another device.
 
 The backend was created using Flask, Python, SQLAlchemy, SQLite, and Socket.IO.
+
+Check out the `angular` branch to see the current front-end code.
