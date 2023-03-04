@@ -242,6 +242,17 @@ def get_tracks_data():
     response = requests.get(f'https://api.spotify.com/v1/tracks?ids={tracklist[:-3]}', headers=AUTH_HEADER)
     return response.json()
 
+@app.before_first_request
+def activate_job():
+    def run_job():
+        while True:
+            get_auth_header()
+            print("Refreshed Spotify Auth Header")
+            time.sleep(3600)
+
+    thread = threading.Thread(target=run_job)
+    thread.daemon = True
+    thread.start()
 
 if __name__ == '__main__':
     get_auth_header()
@@ -249,9 +260,6 @@ if __name__ == '__main__':
         db.create_all()
     print("=== DJ-App Flask Built Successfully ===")
     print("Starting socketio...")
-    token_thread = threading.Thread(target=refresh_token)
-    token_thread.daemon = True
-    token_thread.start()
     socketio.run(app)
     # Start token refresh thread
 
