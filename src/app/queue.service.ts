@@ -10,6 +10,7 @@ export class QueueService {
   currentQueueName = '';
   queueSongs: any = [];
   queueSessionId = '';
+  requestedSongs: any = []; // should probably store in cache with queue code so user can't just refresh
 
   constructor() { }
 }
