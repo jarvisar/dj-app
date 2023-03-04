@@ -50,21 +50,22 @@ export class JoinQueueComponent implements OnInit {
             idList.push(data.songs[i].track_id); // Create a list of all track IDs
             data.songs[i].count = data.songs[i].count; // Add count
           }
-          this.websocketService.getTrackData(idList).subscribe((trackData: any) => { // Get track data from spotify
-            console.log(trackData)
-            for (let i = 0; i < trackData.tracks.length; i++) {
-              let song = trackData.tracks[i];
-              let count = data.songs.find((s: any) => s.track_id === song.id)?.count;
-              song.count = count || 0; // Add count to track data 
-            }
-            this.queue.queueSongs = trackData.tracks.sort((a: any, b: any) => b.count - a.count); // Sort data by count
-            console.log(this.queue.queueSongs);
-          });
+          if (idList.length != 0){
+            this.websocketService.getTrackData(idList).subscribe((trackData: any) => { // Get track data from spotify
+              console.log(trackData)
+              for (let i = 0; i < trackData.tracks.length; i++) {
+                let song = trackData.tracks[i];
+                let count = data.songs.find((s: any) => s.track_id === song.id)?.count;
+                song.count = count || 0; // Add count to track data 
+              }
+              this.queue.queueSongs = trackData.tracks.sort((a: any, b: any) => b.count - a.count); // Sort data by count
+              console.log(this.queue.queueSongs);
+            });
+          }
+          
 
           this.queue.inQueue = true;
           this.errorMessage = '';
-          console.log(data.session_id)
-          console.log(this.websocketService.sessionID)
           this.queue.queueSessionId = data.session_id;
           // if(this.numVotes >= maxVotes){ // Check if user has already voted max amt of times
           //   this.maxVotesReached();

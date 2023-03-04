@@ -73,8 +73,8 @@ export class QueueViewComponent implements OnInit {
             this.queue.requestedSongs.push(track.id);
             this.websocketService.getTrackData([track.id]).subscribe((trackData: any) => {
               console.log(trackData)
-              trackData[0].count = 1; // song not in queue so must be first request
-              this.queue.queueSongs.push(trackData[0]);
+              trackData.tracks[0].count = 1; // song not in queue so must be first request
+              this.queue.queueSongs.push(trackData.tracks[0]);
             });
             //this.numVotes++;
             this.queue.queueSongs = this.queue.queueSongs.sort((a: any, b: any) => b.count - a.count);
