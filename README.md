@@ -12,7 +12,7 @@ This app is a collaborative queue management system designed for DJs and hosts a
 - Creates a crowd-sourced playlist for the DJ to play
 - Allows for song removal to prevent replays
 - Conditional HTML rendering based on user status
-- Support for multiple devices using backup codes (plan to implement)
+- Support for multiple devices using backup codes 
 
 ## Stack
 
