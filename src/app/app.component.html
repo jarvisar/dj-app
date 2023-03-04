@@ -1,7 +1,7 @@
 <div class="gradient">
 <body>
   <div class="content" role="main">
-    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;">Back</button>
+    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)" [disabled]="router.isActive('/', true)">Back</button>
     <!-- <div class="input-container" >
       <div class="create-queue-container">
         <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name" class="input">

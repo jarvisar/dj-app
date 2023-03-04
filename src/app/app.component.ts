@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from './web-socket.service';
 import { LoadingService } from './loading.service';
+import { QueueService } from './queue.service';
+import { Router } from '@angular/router';
 
 const maxVotes = 5
 @Component({
@@ -26,7 +28,7 @@ export class AppComponent implements OnInit {
   newQueueName = 'New Queue';
   currentQueueName = '';
   
-  constructor(public loadingService: LoadingService, public websocketService: WebSocketService) {}
+  constructor(public loadingService: LoadingService, public websocketService: WebSocketService, public queue: QueueService, public router: Router) {}
 
   ngOnInit() { }
 
@@ -138,14 +140,15 @@ export class AppComponent implements OnInit {
   }
 
   leaveQueue(event: Event) {
-    this.inQueue = false;
-    this.setCode = "";
-    this.queueSongs = [];
+    this.queue.inQueue = false;
+    this.queue.setCode = "";
+    this.queue.queueSongs = [];
     this.newlyCreatedCode = "";
     this.showQueueSongTable = false;
     this.numVotes = 0;
-    this.requestedSongs = [];
+    this.queue.requestedSongs = [];
     this.maxVotes = false;
+    this.queue.queueSessionId = '';
   }
 
   requestedSongs: any = [];
