@@ -11,6 +11,7 @@ import os
 import time
 import sched
 import threading
+import signal
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -55,7 +56,7 @@ def refresh_token():
     while True:
         get_auth_header()
         print("Refreshed Spotify Auth Header")
-        time.sleep(3600)
+        time.sleep(20)
 
 # define SQLite schema
 class Queue(db.Model):
@@ -246,6 +247,7 @@ if __name__ == '__main__':
     print("=== DJ-App Flask Built Successfully ===")
     print("Starting socketio...")
     token_thread = threading.Thread(target=refresh_token)
+    token_thread.daemon = True
     token_thread.start()
     socketio.run(app)
     # Start token refresh thread
