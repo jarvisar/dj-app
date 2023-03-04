@@ -1,1 +1,1 @@
-web: gunicorn dj-app:app
+web: gunicorn app:app
