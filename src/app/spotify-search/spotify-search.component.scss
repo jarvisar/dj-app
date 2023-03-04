@@ -22,8 +22,7 @@
   .request-button:hover{
     cursor: pointer;
     box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777;
-      transform: translateY(-1px);
-      cursor: pointer;
+    transform: translateY(-1px);
   }
   
   .request-button:active{
@@ -81,7 +80,6 @@
   
   .song:hover {
     background-color: #555;
-    cursor: pointer;
   }
   
   .song-image {
@@ -110,4 +108,25 @@
     font-size: 0.8rem;
     color: #aaa;
     margin: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 740px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
