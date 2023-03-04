@@ -22,7 +22,6 @@ TODO:
 * Add "remove song" and "delete queue" buttons for queue creators
 * Add error handling for when the backend server is down or unable to connect
 * Add backup code for queue creators to use if sessionID doesn't work (generate extra four digit code for every queue; optional for users)
-* Split up code into components instead of using app component for everything
 * Add query parameters to URL to allow users to join queues by visiting a link (i.e. localhost:4200/?code=1111/ to automatically join queue 1111.)
 * Work on mobile app
 
