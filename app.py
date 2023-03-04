@@ -56,7 +56,7 @@ def refresh_token():
     while True:
         get_auth_header()
         print("Refreshed Spotify Auth Header")
-        time.sleep(20)
+        time.sleep(3600)
 
 # define SQLite schema
 class Queue(db.Model):
