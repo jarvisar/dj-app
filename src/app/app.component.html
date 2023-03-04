@@ -64,7 +64,7 @@
         </div>
     </span> -->
 
-    <mat-spinner *ngIf="loadingService.isLoading$ | async" [diameter]="70" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 35px); stroke: #aa0000;"></mat-spinner> 
+    <mat-spinner *ngIf="loadingService.isLoading$ | async" [diameter]="70" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 35px); stroke: #aa0000; z-index: 10000;"></mat-spinner> 
 
     <router-outlet></router-outlet>
   
