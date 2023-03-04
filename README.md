@@ -20,9 +20,10 @@ Still need a name. Current possible names:
 TODO:
 
 * Add "remove song" and "delete queue" buttons for queue creators
-* Add error handling for when the backend server is down or unable to connect
 * Add backup code for queue creators to use if sessionID doesn't work (generate extra four digit code for every queue; optional for users)
 * Add query parameters to URL to allow users to join queues by visiting a link (i.e. localhost:4200/?code=1111/ to automatically join queue 1111.)
+* Allow queue creators to blacklist specific tracks so users cannot add it to the queue
+* Add refresh button to queue view to reload queue song list (optimize so it only updates the counts of existing songs but gets Spotify track data for new songs? Can compare track IDs in current queue song list to updated queue song list)
 * Work on mobile app
 
 Planning:
