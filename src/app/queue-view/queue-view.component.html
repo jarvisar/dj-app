@@ -19,7 +19,7 @@
         <p style="display: block;">No songs in queue</p>
     </div>
     <div *ngIf="queue.queueSongs.length == 0 && !(loadingService.isLoading$ | async)" style="position: absolute; bottom: calc(50% - 25px); left: 50%; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -50%);">
-        <p style="display: block; text-decoration: underline;" (click)="spotifySearch($event)">Add one!</p>
+        <p style="display: block; text-decoration: underline;" (click)="spotifySearch($event)" class="add-one-text">Add one!</p>
     </div>
     <button class="search-spotify-button" (click)="spotifySearch($event)"><mat-icon>add</mat-icon></button>
   </div>
