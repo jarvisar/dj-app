@@ -10,10 +10,20 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule  } from '@angular/common/http';
 import { LoadingInterceptor } from './loading-interceptor.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { JoinQueueComponent } from './join-queue/join-queue.component';
+import { CreateQueueComponent } from './create-queue/create-queue.component';
+import { QueueViewComponent } from './queue-view/queue-view.component';
+import { SpotifySearchComponent } from './spotify-search/spotify-search.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    JoinQueueComponent,
+    CreateQueueComponent,
+    QueueViewComponent,
+    SpotifySearchComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
