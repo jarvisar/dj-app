@@ -49,12 +49,9 @@ def get_auth_header():
         TOKEN_EXPIRATION_TIME = time.time() + response.json()["expires_in"]
     return AUTH_HEADER
 
+# Function to refresh token every hour
 def refresh_token():
     global AUTH_HEADER, TOKEN_EXPIRATION_TIME
-
-    # Set AUTH_HEADER and TOKEN_EXPIRATION_TIME to None before the first refresh
-    AUTH_HEADER = None
-    TOKEN_EXPIRATION_TIME = 3600
 
     while True:
         get_auth_header()
@@ -242,28 +239,16 @@ def get_tracks_data():
     response = requests.get(f'https://api.spotify.com/v1/tracks?ids={tracklist[:-3]}', headers=AUTH_HEADER)
     return response.json()
 
-def activate_job():
-    def run_job():
-        while True:
-            auth_header = get_auth_header()
-            print(auth_header)
-            if auth_header is not None:
-                os.environ['AUTH_HEADER'] = str(auth_header)
-                print("Refreshed Spotify Auth Header")
-            print(os.getenv('AUTH_HEADER'))
-            time.sleep(3600)
-
-    thread = threading.Thread(target=run_job)
-    thread.daemon = True
-    thread.start()
-
 if __name__ == '__main__':
     get_auth_header()
     with app.app_context():
         db.create_all()
     print("=== DJ-App Flask Built Successfully ===")
     print("Starting socketio...")
-    activate_job()
+    token_thread = threading.Thread(target=refresh_token)
+    token_thread.daemon = True
+    token_thread.start()
     socketio.run(app)
     # Start token refresh thread
+
 
