@@ -51,12 +51,13 @@ export class JoinQueueComponent implements OnInit {
             data.songs[i].count = data.songs[i].count; // Add count
           }
           this.websocketService.getTrackData(idList).subscribe((trackData: any) => { // Get track data from spotify
-            for (let i = 0; i < trackData.length; i++) {
-              let song = trackData[i];
+            console.log(trackData)
+            for (let i = 0; i < trackData.tracks.length; i++) {
+              let song = trackData.tracks[i];
               let count = data.songs.find((s: any) => s.track_id === song.id)?.count;
               song.count = count || 0; // Add count to track data 
             }
-            this.queue.queueSongs = trackData.sort((a: any, b: any) => b.count - a.count); // Sort data by count
+            this.queue.queueSongs = trackData.tracks.sort((a: any, b: any) => b.count - a.count); // Sort data by count
             console.log(this.queue.queueSongs);
           });
 

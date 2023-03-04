@@ -1,6 +1,6 @@
 <h1 style="text-align: center;">New Queue</h1>
 <div class="create-queue-container">
-    <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name" class="input">
+    <input type="text" [(ngModel)]="newQueueName" class="input"  onfocus="this.placeholder=''" onBlur="this.placeholder='Queue Name'" [placeholder]="'Queue Name'">
     <br>
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
         <button (click)="createQueue($event)" [disabled]="queue.inQueue" class="input-button">Create Queue</button>
