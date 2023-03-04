@@ -1,0 +1,42 @@
+.home-button{
+    width: 300px;
+    height: 300px;
+    background-color: transparent;
+    border: transparent;
+    border-radius: 30px;
+    position: relative;
+    margin: 30px;
+}
+
+.button-background {
+  /* styles for the button container */
+  width: 300px;
+  height: 300px;
+  background-color: #ddd;
+  opacity: 0.35;
+  filter: blur(1px);
+  position: absolute;
+  border-radius: 35px;
+  top: 0;
+  transition: all .25s ease;
+}
+
+.button-background:hover {
+    /* styles for the button container */
+    background-color: #fff;
+    filter: blur(3px);
+    box-shadow: 0px 0px 5px #666;
+    cursor: pointer;
+  }
+
+.button-background:hover mat-icon {
+    /* styles for the button container */
+    background-color: #fff;
+    filter: none;
+    box-shadow: 0px 0px 5px #666;
+  }
+
+mat-icon{
+    color: #666;
+    pointer-events: none;
+}

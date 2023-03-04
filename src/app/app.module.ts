@@ -15,7 +15,7 @@ import { CreateQueueComponent } from './create-queue/create-queue.component';
 import { QueueViewComponent } from './queue-view/queue-view.component';
 import { SpotifySearchComponent } from './spotify-search/spotify-search.component';
 import { HomeComponent } from './home/home.component';
-import { CustomReuseStrategy } from './route-reuse.strategy';
+import { MatIconModule } from '@angular/material/icon'
 import { Route, RouterModule, RouteReuseStrategy } from '@angular/router';
 
 @NgModule({
@@ -35,7 +35,8 @@ import { Route, RouterModule, RouteReuseStrategy } from '@angular/router';
     HttpClientModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    RouterModule
+    RouterModule,
+    MatIconModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, HttpClientModule, JoinQueueComponent],
   bootstrap: [AppComponent]
