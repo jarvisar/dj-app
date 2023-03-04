@@ -11,3 +11,5 @@ To ensure that only the creator of a queue can delete the queue or its songs, th
 The backend was created using Flask, Python, SQLAlchemy, SQLite, and Socket.IO.
 
 Check out the `angular` branch to see the current front-end code.
+
+Note: this application is still very early in development and is currently in prototype phase.
