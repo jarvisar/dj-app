@@ -2,4 +2,4 @@
     <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code" class="code">
     <button (click)="joinQueue($event)" [disabled]="queue.inQueue" class="input-button">Join Queue</button>
     <div style="background-color: #fff; border-radius: 5px; padding: 5px;" *ngIf="queue.setCode != '' && queue.inQueue"><p *ngIf="queue.setCode != '' && queue.inQueue">In queue {{queue.setCode}}</p><p *ngIf="queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue"> You made this queue!</p></div>
-  </div>
+</div>
