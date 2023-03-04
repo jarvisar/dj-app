@@ -8,6 +8,9 @@ import random
 import string
 import requests
 import os
+import time
+import sched
+import threading
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -16,8 +19,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
 SPOTIFY_SEARCH_API = 'https://api.spotify.com/v1/search'
-
-AUTH_HEADER = None
 
 load_dotenv(dotenv_path='./spotify_client.env')
 
@@ -28,10 +29,15 @@ CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 socketio = SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
 
-# Get authorization header
+TOKEN_EXPIRATION_TIME = 3600  # Token expires in 1 hour
+AUTH_HEADER = None
+
+# Function to get authentication header
 def get_auth_header():
-    global AUTH_HEADER
-    if AUTH_HEADER is None:
+    global AUTH_HEADER, TOKEN_EXPIRATION_TIME
+
+    # Check if token is expired or not set
+    if AUTH_HEADER is None or time.time() > TOKEN_EXPIRATION_TIME:
         url = "https://accounts.spotify.com/api/token"
         data = {"grant_type": "client_credentials"}
         response = requests.post(url, auth=(CLIENT_ID, CLIENT_SECRET), data=data)
@@ -39,7 +45,17 @@ def get_auth_header():
             print(f"Error getting token: {response.json()}")
             return None
         AUTH_HEADER = {"Authorization": "Bearer " + response.json()["access_token"]}
+        TOKEN_EXPIRATION_TIME = time.time() + response.json()["expires_in"]
     return AUTH_HEADER
+
+# Function to refresh token every hour
+def refresh_token():
+    global AUTH_HEADER, TOKEN_EXPIRATION_TIME
+
+    while True:
+        get_auth_header()
+        print("Refreshed Spotify Auth Header")
+        time.sleep(3600)
 
 # define SQLite schema
 class Queue(db.Model):
@@ -229,5 +245,9 @@ if __name__ == '__main__':
         db.create_all()
     print("=== DJ-App Flask Built Successfully ===")
     print("Starting socketio...")
+    token_thread = threading.Thread(target=refresh_token)
+    token_thread.start()
     socketio.run(app)
+    # Start token refresh thread
+
 
