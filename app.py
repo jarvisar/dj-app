@@ -21,6 +21,8 @@ db = SQLAlchemy(app)
 
 SPOTIFY_SEARCH_API = 'https://api.spotify.com/v1/search'
 
+load_dotenv(dotenv_path='./spotify_client.env')
+
 CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 
