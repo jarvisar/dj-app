@@ -4,8 +4,6 @@ from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_caching import Cache
-from geventwebsocket.handler import WebSocketHandler
-from gevent.pywsgi import WSGIHandler, WSGIServer
 import random
 import string
 import requests
@@ -241,18 +239,16 @@ def get_tracks_data():
     response = requests.get(f'https://api.spotify.com/v1/tracks?ids={tracklist[:-3]}', headers=AUTH_HEADER)
     return response.json()
 
-token_thread = threading.Thread(target=refresh_token)
-token_thread.daemon = True
-token_thread.start()
-
 if __name__ == '__main__':
     get_auth_header()
     with app.app_context():
         db.create_all()
     print("=== DJ-App Flask Built Successfully ===")
     print("Starting socketio...")
-    http_server = WSGIServer(('', 5000), app, handler_class=WebSocketHandler)
-    http_server.serve_forever()
+    token_thread = threading.Thread(target=refresh_token)
+    token_thread.daemon = True
+    token_thread.start()
+    socketio.run(app)
     # Start token refresh thread
 
 
