@@ -18,4 +18,4 @@
     <button class="search-spotify-button" routerLink="/search" routerLinkActive="active"><mat-icon>add</mat-icon></button>
   </div>
   <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
-  <div style="display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 18px; padding: 0 15px; border: 2px solid #fff; color: #ddd; text-align: center; outline: none; background-color: rgba(54, 25, 25, .2);" *ngIf="queue.setCode != '' && queue.inQueue"><p *ngIf="queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue"> You made this queue!</p></div>
+  <div style="display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 18px; padding: 0 15px; border: 2px solid #fff; color: #ddd; text-align: center; outline: none; background-color: rgba(54, 25, 25, .2);" *ngIf="queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue"><p > You made this queue!</p></div>
