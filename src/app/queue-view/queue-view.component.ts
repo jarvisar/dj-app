@@ -18,10 +18,6 @@ export class QueueViewComponent implements OnInit {
   constructor(public websocketService: WebSocketService, public queue: QueueService, public loadingService: LoadingService, private router: Router, private authGuard: AuthGuard) { }
 
   ngOnInit(): void {
-    
-    setTimeout(() => {
-      console.log(this.queue.queueSongs)
-    }, 3000); 
   }
 
   checkConnection(): Boolean{
