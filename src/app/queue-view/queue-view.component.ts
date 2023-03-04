@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingService } from '../loading.service';
 import { QueueService } from '../queue.service';
 import { WebSocketService } from '../web-socket.service';
 
@@ -12,7 +13,7 @@ export class QueueViewComponent implements OnInit {
   errorMessage: any;
   public maxVotes = false;
 
-  constructor(public websocketService: WebSocketService, public queue: QueueService) { }
+  constructor(public websocketService: WebSocketService, public queue: QueueService, public loadingService: LoadingService) { }
 
   ngOnInit(): void {
   }
