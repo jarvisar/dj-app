@@ -52,6 +52,9 @@
     height: 60px;
     padding: 10px 0;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .playlist {
@@ -64,8 +67,15 @@ h1 {
     font-size: 2rem;
     margin: 0;
     padding: 1rem;
-
     text-align: center;
+}
+
+h4 {
+    font-size: 1rem;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
+    color: #ddd
 }
 
 .song:not(.song:last-of-type) {
