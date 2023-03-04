@@ -15,6 +15,8 @@ import { CreateQueueComponent } from './create-queue/create-queue.component';
 import { QueueViewComponent } from './queue-view/queue-view.component';
 import { SpotifySearchComponent } from './spotify-search/spotify-search.component';
 import { HomeComponent } from './home/home.component';
+import { CustomReuseStrategy } from './route-reuse.strategy';
+import { Route, RouterModule, RouteReuseStrategy } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -32,9 +34,10 @@ import { HomeComponent } from './home/home.component';
     FormsModule,
     HttpClientModule,
     MatTableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RouterModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, HttpClientModule],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }, { provide: RouteReuseStrategy, useClass: CustomReuseStrategy}, HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
