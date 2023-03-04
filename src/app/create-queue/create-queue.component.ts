@@ -47,7 +47,7 @@ export class CreateQueueComponent implements OnInit {
         } else {
           console.log('Code:', data);
           this.errorMessage = '';
-          this.queue.setCode = data.code;
+          this.joinQueue.inputCode = data.code;
           this.joinQueue.joinQueue();
         }
       },
