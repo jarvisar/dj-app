@@ -1,5 +1,6 @@
 <h1>New Queue</h1>
 <div class="create-queue-container">
     <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name" class="input">
-    <button (click)="createQueue($event)" [disabled]="queue.inQueue" class="input-button" routerLink="/queue" routerLinkActive="active">Create Queue</button>
+    <button (click)="createQueue($event)" [disabled]="queue.inQueue" class="input-button">Create Queue</button>
   </div>
+  <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>

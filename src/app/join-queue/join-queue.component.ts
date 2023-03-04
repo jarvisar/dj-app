@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { QueueService } from '../queue.service';
 import { WebSocketService } from '../web-socket.service';
 
@@ -12,7 +13,7 @@ export class JoinQueueComponent implements OnInit {
   errorMessage = '';
   inputCode!: string;
 
-  constructor(public websocketService: WebSocketService, public queue: QueueService) { }
+  constructor(public websocketService: WebSocketService, public queue: QueueService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -41,6 +42,7 @@ export class JoinQueueComponent implements OnInit {
           this.inputCode = ""; // Blank input box
           this.queue.currentQueueName = data.queue_name; // Set queue name
           let idList = [];
+          this.router.navigate(['/queue']);
           for(let i = 0; i < data.songs.length; i++){
             idList.push(data.songs[i].track_id); // Create a list of all track IDs
             data.songs[i].count = data.songs[i].count; // Add count

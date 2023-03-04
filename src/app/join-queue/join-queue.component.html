@@ -1,6 +1,7 @@
 <h1>Join Queue</h1>
 <div class="join-queue-container">
     <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code" class="code">
-    <button (click)="joinQueue($event)" [disabled]="queue.inQueue" class="input-button" routerLink="/queue" routerLinkActive="active">Join Queue</button>
+    <button (click)="joinQueue($event)" [disabled]="queue.inQueue" class="input-button">Join Queue</button>
     <div style="background-color: #fff; border-radius: 5px; padding: 5px;" *ngIf="queue.setCode != '' && queue.inQueue"><p *ngIf="queue.setCode != '' && queue.inQueue">In queue {{queue.setCode}}</p><p *ngIf="queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue"> You made this queue!</p></div>
 </div>
+<p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
