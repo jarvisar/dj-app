@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { QueueViewComponent } from '../queue-view/queue-view.component';
 import { QueueService } from '../queue.service';
 import { WebSocketService } from '../web-socket.service';
@@ -14,7 +15,7 @@ export class SpotifySearchComponent implements OnInit {
   searchString!: string;
   searchData: any = [];
 
-  constructor(public websocketService: WebSocketService, public queue: QueueService, public queueView: QueueViewComponent) { }
+  constructor(public websocketService: WebSocketService, public queue: QueueService, public queueView: QueueViewComponent, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -62,11 +63,11 @@ export class SpotifySearchComponent implements OnInit {
         this.errorMessage = ''; // remove class after animation ends
       }, 3000); // remove class after 5 seconds
     }
-
   }
 
   addSong(event: Event, song: any){
     this.queueView.addSong(event, song);
+    this.router.navigate(['/queue']); // Route user to queue view component (song list)
   }
 
 }

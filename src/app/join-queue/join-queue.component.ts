@@ -42,7 +42,7 @@ export class JoinQueueComponent implements OnInit {
           this.inputCode = ""; // Blank input box
           this.queue.currentQueueName = data.queue_name; // Set queue name
           let idList = [];
-          this.router.navigate(['/queue']);
+          this.router.navigate(['/queue']); // Route user to queue view component (song list)
           for(let i = 0; i < data.songs.length; i++){
             idList.push(data.songs[i].track_id); // Create a list of all track IDs
             data.songs[i].count = data.songs[i].count; // Add count

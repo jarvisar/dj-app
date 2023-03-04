@@ -41,6 +41,7 @@
     border-radius: 20px;
     height: 800px;
     overflow-y: auto;
+    position: relative;
   }
   
   .sticky-header {
@@ -105,8 +106,13 @@
     margin: 0;
   }
   
-  .song-artist {
+.song-artist {
     font-size: 0.8rem;
     color: #aaa;
     margin: 0;
-  }
+}
+
+.search-spotify-button{
+    position: absolute;
+
+}
