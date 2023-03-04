@@ -5,8 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class QueueService {
 
-  public inputCode: any;
+  public setCode: any;
   inQueue: boolean = false;
+  currentQueueName = '';
+  queueSongs: any = [];
+  queueSessionId = '';
 
   constructor() { }
 }

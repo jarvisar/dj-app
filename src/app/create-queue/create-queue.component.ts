@@ -12,7 +12,6 @@ export class CreateQueueComponent implements OnInit {
 
   errorMessage = '';
   newQueueName = 'New Queue';
-  newlyCreatedCode: string = '';
 
   constructor(public websocketService: WebSocketService, public joinQueue: JoinQueueComponent, public queue: QueueService) { }
 
@@ -39,7 +38,6 @@ export class CreateQueueComponent implements OnInit {
     if(this.newQueueName != '') {
       this.websocketService.createQueue(this.newQueueName).subscribe(
       (data: any) => {
-        this.newlyCreatedCode = data.code;
         console.log(data.code);
         if (data.code == ""){
           this.errorMessage = 'Error creating queue.';
@@ -49,7 +47,7 @@ export class CreateQueueComponent implements OnInit {
         } else {
           console.log('Code:', data);
           this.errorMessage = '';
-          this.queue.inputCode = data.code;
+          this.queue.setCode = data.code;
           this.joinQueue.joinQueue();
         }
       },
