@@ -1,15 +1,36 @@
-# dj-app
+# DJ-App
 
-This app is a collaborative queue management system designed for DJs and hosts at parties. Using the app, DJs and hosts can create a new "queue" from a mobile device or web browser and receive a unique four-digit code. Partygoers can join the queue using their phone or browser by entering the code on the app and searching for songs through the Spotify API. The app tracks the number of requests for each song, creating a crowd-sourced playlist for the DJ to play sorted by the number of requests.
+This app is a collaborative queue management system designed for DJs and hosts at parties. It utilizes Flask Python backend, SQLite database, and SocketIO websockets for connections. The app also integrates with the Spotify API to allow users to search for and add songs to the queue.
 
-To search for songs, the app utilizes Spotify's API and searches using various keywords such as song name, artist, and album name. When a song is requested, the app sends the trackId and song information to the backend. This enables the app to retrieve song info (such as album art and genres) later on, when the DJ views the playlist (plan to add other interactions to the song list for queue creators, such as genre filtering and other sorting options).
+## Features
 
-When a user requests a song, the Flask Python backend adds it to the queue stored in a SQLite database. The DJ can view a list of songs sorted by the number of requests, and after playing a song, they can remove it from the queue to prevent replays. The app also allows the DJ to reset the number of requests for a song, moving it to the bottom of the queue.
+- Collaborative queue management
+- Unique four-digit queue codes
+- Song requests from mobile or web browser
+- Spotify API integration for song search
+- Tracks number of requests for each song
+- Creates a crowd-sourced playlist for the DJ to play
+- Allows for song removal to prevent replays
+- Conditional HTML rendering based on user status
+- Support for multiple devices using backup codes (plan to implement)
 
-To ensure that only the creator of a queue can delete the queue or its songs, the Angular app generates a random string which is stored in the user's local storage as cached data and is passed to the backend when creating a queue. This string is then stored in the SQL database as the creatorID. When the backend sends a specific queue's data to the user's app, the app verifies the user as the queue owner by comparing the string cached in the local storage to the creatorID from the queue. If they match, the current user is the queue owner. This enables the app to conditionally render HTML elements such as "Delete Song" and "Delete Queue" to the queue owner. Also plan to implement optional 4-character backup codes if a user is not given "Creator" status due to cache clearing or using the app on another device.
+## Technologies Used
 
-The backend was created using Flask, Python, SQLAlchemy, SQLite, and Socket.IO.
+- Flask
+- Python
+- SQLAlchemy
+- SQLite
+- Socket.IO
+- Angular (front-end)
 
-Check out the `angular` branch to see the current front-end code.
+## Usage
 
-Note: this application is still very early in development and is currently in prototype phase.
+1. Create a new queue from a web browser to receive a unique four-digit code
+2. Partygoers can join the queue by entering the code on the app and searching for songs through the Spotify API
+3. The app tracks the number of requests for each song, creating a crowd-sourced playlist for the DJ to play sorted by the number of requests
+4. The DJ can view a list of songs sorted by the number of requests and remove songs after playing them to prevent replays
+5. The app also allows the DJ to reset the number of requests for a song, moving it to the bottom of the queue
+
+## Known Issues
+
+This application is still very early in development and is subject to drastic changes. 
