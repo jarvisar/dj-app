@@ -1,7 +1,7 @@
 <div class="gradient">
 <body>
   <div class="content" role="main" style="height: calc(100% - 30px); overflow: hidden;">
-    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)" *ngIf="!router.isActive('/', true) && !router.isActive('/create', true) && !router.isActive('/search', true)">Leave Queue</button>
+    <button routerLink="/" title="Leave Queue" routerLinkActive="active" class="leave-queue-button" (click)="leaveQueue($event)" *ngIf="!router.isActive('/', true) && !router.isActive('/create', true) && !router.isActive('/search', true)"><mat-icon>close</mat-icon></button>
     
     <mat-spinner *ngIf="loadingService.isLoading$ | async" [diameter]="70" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 35px); stroke: #aa0000; z-index: 10000;"></mat-spinner> 
 
