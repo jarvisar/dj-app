@@ -1,69 +1,8 @@
 <div class="gradient">
 <body>
   <div class="content" role="main" style="height: calc(100% - 30px); overflow: hidden;">
-    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)">Leave Queue</button>
-    <!-- <div class="input-container" >
-      <div class="create-queue-container">
-        <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name" class="input">
-        <button (click)="createQueue($event)" [disabled]="inQueue" class="input-button">Create Queue</button>
-        <p *ngIf="newlyCreatedCode != ''">{{newlyCreatedCode}}</p>
-      </div>
-      <br>
-      <div class="join-queue-container">
-        <input type="text" [(ngModel)]="inputCode" placeholder="Queue Code" class="code">
-        <button (click)="joinQueue($event)" [disabled]="inQueue" class="input-button">Join Queue</button>
-        <div style="background-color: #fff; border-radius: 5px; padding: 5px;" *ngIf="setCode != '' && inQueue"><p *ngIf="setCode != '' && inQueue">In queue {{setCode}}</p><p *ngIf="queueSessionId == websocketService.sessionID && setCode != '' && inQueue"> You made this queue!</p></div>
-      </div>
-      <br>
-      <div class="leave-queue-container"> 
-        <button (click)="leaveQueue($event)" [disabled]="!inQueue" class="input-button">Leave Queue</button>
-      </div>
-      <br>
-      <div class="search-spotify-container">
-        <input type="text" [(ngModel)]="searchString" placeholder="Search" class="input">
-        <button mat-raised-button (click)="searchSpotify($event)" [disabled]="searchString == undefined || searchString == ''" class="input-button">Search</button>
-      </div>
-    </div> -->
-  
-    <!-- <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
-  
-    <span class="table-container">
-      <div *ngIf="showSearchTable" class="playlist-container">
-        <div class="scroll-container">
-          <div class="sticky-header">
-            <h1>Spotify Search</h1>
-          </div>
-          <ul class="playlist">
-            <li *ngFor="let song of searchData" class="song">
-              <div class="song-image"><img src="{{song.album.images[0].url}}"></div>
-              <div class="song-details">
-                <div class="song-title">{{song.name}}</div>
-                <div class="song-artist">{{song.artists[0].name}}</div>
-                <button [disabled]="!inQueue || requestedSongs.includes(song.id) || maxVotes" mat-raised-button (click)="addSong($event, song)" class="request-button">Request</button>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-  
-      <div *ngIf="showQueueSongTable" class="playlist-container">
-          <div class="sticky-header">
-            <h1>{{currentQueueName}}</h1>
-          </div>
-          <ul class="playlist">
-            <li *ngFor="let song of queueSongs, let i = index" class="song">
-              <div class="song-image"><img src="{{song.album.images[0].url}}"></div>
-              <div class="song-details">
-                <div class="song-title">{{song.name}}</div>
-                <div class="song-artist">{{song.artists[0].name}}</div>
-                <button [disabled]="!inQueue || requestedSongs.includes(song.id) || maxVotes" mat-raised-button (click)="addSong($event, song)" class="request-button">Request</button>
-                <div class="request-count">{{song.count}} Requests</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-    </span> -->
-
+    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)" *ngIf="!router.isActive('/', true)">Leave Queue</button>
+    
     <mat-spinner *ngIf="loadingService.isLoading$ | async" [diameter]="70" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 35px); stroke: #aa0000; z-index: 10000;"></mat-spinner> 
 
     <router-outlet style="overflow: hidden;"></router-outlet>
