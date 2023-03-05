@@ -16,7 +16,7 @@
           <div class="song-details">
             <div class="song-title">{{song.name}}</div>
             <div class="song-artist">{{song.artists[0].name}}</div>
-            <button [disabled]="!queue.inQueue || queue.requestedSongs.includes(song.id)" mat-raised-button (click)="addSong($event, song)" class="request-button">Request</button>
+            <button [disabled]="!queue.inQueue || queue.requestedSongs.includes(song.id)" mat-raised-button (click)="addSong($event, song)" class="request-button">Add</button>
           </div>
         </li>
       </ul>
