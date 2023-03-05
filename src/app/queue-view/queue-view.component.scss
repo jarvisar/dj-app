@@ -4,6 +4,7 @@
     right: 0px;
     height: 30px;
     width: 75px;
+    color: #ddd;
     background-color: #0d914f;
     border-radius: 10px;
     border: transparent;
@@ -38,6 +39,7 @@
     width: calc(100vw - 20px);
     max-width: 600px;
     height: calc(100vh - 140px);
+    max-height: 800px;
     margin: 15px;
     font-family: "Circular Spotify Tx T Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
     border-radius: 20px;
@@ -126,6 +128,11 @@
     position: sticky;
     bottom: 0;
     right: 0;
+    background-color: #0d914f;
+}
+
+.search-spotify-button mat-icon{
+    color: #ddd;
 }
 
 .add-one-text:hover{
@@ -151,4 +158,14 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
+}
+
+@media only screen and (max-width: 600px) {
+    .playlist-container {
+        height: calc(100vh - 145px);
+    }
+
+    .owner {
+        height: calc(100vh - 190px);
+    }
 }
