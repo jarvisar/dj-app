@@ -125,19 +125,26 @@
 }
 
 .search-spotify-button{
-    position: sticky;
-    bottom: 0;
-    right: 0;
     background-color: #0d914f;
+    position: absolute; 
+    bottom: 20px; 
+    left: 20px; 
+    width: 30px; 
+    height: 30px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    border-radius: 15px;
     border: transparent;
 }
-
+  
 .search-spotify-button:hover{
-    filter: brightness(0.8)
+    filter: brightness(0.8);
+    cursor: pointer;
 }
 
 .search-spotify-button:active{
-    filter: brightness(0.7)
+    filter: brightness(0.7);
 }
 
 .search-spotify-button mat-icon{

@@ -25,6 +25,28 @@ input {
   opacity: 1; /* Firefox */
 }
 
+.back-button{
+  position: absolute; 
+  bottom: 20px; 
+  left: 20px; 
+  width: 30px; 
+  height: 30px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 15px;
+  border: transparent;
+}
+
+.back-button:hover{
+  filter: brightness(0.8);
+  cursor: pointer;
+}
+
+.back-button:active{
+  filter: brightness(0.7);
+}
+
 .request-button{
     position: absolute;
     bottom: 0px;
@@ -64,6 +86,7 @@ input {
     width: calc(100vw - 20px);
     max-width: 600px;
     height: calc(100vh - 140px);
+    max-height: 800px;
     margin: 15px;
     font-family: "Circular Spotify Tx T Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
     border-radius: 20px;

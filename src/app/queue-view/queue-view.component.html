@@ -2,6 +2,7 @@
 <h1 style="text-align: center;">Current Song List</h1>
 <div class="playlist-container" [ngClass]="{'owner': queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue}">
     <div class="sticky-header">
+      <button class="search-spotify-button" (click)="spotifySearch($event)"><mat-icon>add</mat-icon></button>
       <h1>{{queue.currentQueueName}}</h1>
       <h4>Code: {{queue.setCode}}</h4>
     </div>
@@ -22,7 +23,6 @@
     <div *ngIf="queue.queueSongs.length == 0 && !(loadingService.isLoading$ | async)" style="position: absolute; bottom: calc(50% - 25px); left: 50%; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -50%);">
         <p style="display: block; text-decoration: underline;" (click)="spotifySearch($event)" class="add-one-text">Add one!</p>
     </div>
-    <button class="search-spotify-button" (click)="spotifySearch($event)"><mat-icon>add</mat-icon></button>
   </div>
   <p *ngIf="errorMessage != ''" style="font-weight: 700; color: #aa0000;" class="fade-in-out">{{errorMessage}}</p>
   <div style="display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 18px; padding: 0 15px; border: 2px solid #fff; color: #ddd; text-align: center; outline: none; background-color: rgba(54, 25, 25, .2);" *ngIf="queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue"><p style="padding-top: 10px;"> You made this queue!</p></div>
