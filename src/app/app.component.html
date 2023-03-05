@@ -1,6 +1,6 @@
 <div class="gradient">
 <body>
-  <div class="content" role="main" style="height: calc(100% - 30px);">
+  <div class="content" role="main" style="height: calc(100% - 30px); overflow: hidden;">
     <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)" *ngIf="!router.isActive('/', true) && !router.isActive('/search', true)">Back</button>
     <!-- <div class="input-container" >
       <div class="create-queue-container">
@@ -66,7 +66,7 @@
 
     <mat-spinner *ngIf="loadingService.isLoading$ | async" [diameter]="70" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 35px); stroke: #aa0000; z-index: 10000;"></mat-spinner> 
 
-    <router-outlet></router-outlet>
+    <router-outlet style="overflow: hidden;"></router-outlet>
   
   </div>
   

@@ -1,4 +1,5 @@
-<h1>Spotify Search</h1>
+<div style="overflow: hidden">
+  <h1>Spotify Search</h1>
 <button style="position: fixed; top: 15px; left: 15px;" (click)="backButton($event)">Back</button>
 <div class="search-spotify-container">
     <input type="text" [(ngModel)]="searchString" onfocus="this.placeholder=''" onBlur="this.placeholder='Search'" [placeholder]="'Search'" class="input">
@@ -21,3 +22,4 @@
       </ul>
     </div>
   </div>
+</div>
