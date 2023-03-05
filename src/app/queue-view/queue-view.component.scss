@@ -129,6 +129,15 @@
     bottom: 0;
     right: 0;
     background-color: #0d914f;
+    border: transparent;
+}
+
+.search-spotify-button:hover{
+    filter: brightness(0.8)
+}
+
+.search-spotify-button:active{
+    filter: brightness(0.7)
 }
 
 .search-spotify-button mat-icon{
