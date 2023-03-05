@@ -184,4 +184,10 @@
     .owner {
         height: calc(100vh - 190px);
     }
+
+    .search-spotify-button{
+        position: fixed !important; 
+        top: 10px; 
+        left: calc(100% - 40px);
+    }
 }
