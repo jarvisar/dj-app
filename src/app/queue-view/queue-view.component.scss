@@ -35,8 +35,9 @@
 .playlist-container {
     background-color: #282828;
     color: #fff;
-    width: 600px;
-    height: 800px;
+    width: calc(100vw - 20px);
+    max-width: 600px;
+    height: calc(100vh - 140px);
     margin: 15px;
     font-family: "Circular Spotify Tx T Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
     border-radius: 20px;

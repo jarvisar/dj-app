@@ -161,7 +161,7 @@ input {
 @media only screen and (max-width: 600px) {
   .playlist-container {
       width: 400px;
-      height: 600px;
+      height: calc(100%);
   }
 }
 
