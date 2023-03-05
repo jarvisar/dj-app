@@ -1,7 +1,7 @@
 <h1>Spotify Search</h1>
 <button style="position: fixed; top: 15px; left: 15px;" (click)="backButton($event)">Back</button>
 <div class="search-spotify-container">
-    <input type="text" [(ngModel)]="searchString" placeholder="Search" class="input">
+    <input type="text" [(ngModel)]="searchString" onfocus="this.placeholder=''" onBlur="this.placeholder='Search'" [placeholder]="'Search'" class="input">
     <button mat-raised-button (click)="searchSpotify($event)" [disabled]="searchString == undefined || searchString == ''" class="input-button">Search</button>
   </div>
 <div class="playlist-container">

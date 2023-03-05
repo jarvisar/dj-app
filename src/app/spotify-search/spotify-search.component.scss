@@ -1,3 +1,23 @@
+input {
+  width: 150px;
+  height: 60px;
+  border-radius: 6px;
+  font-size: 28px;
+  padding: 0 15px;
+  border: 2px solid #fff;
+  color: #eaeaea;
+  text-align: center;
+  outline: none;
+  background-color: rgba(54, 25, 25, .2);
+}
+
+/* Placeholder Styling */
+::placeholder { 
+  color: #ccc;
+  font-size: 24px;
+  opacity: 1; /* Firefox */
+}
+
 .request-button{
     position: absolute;
     bottom: 0px;
@@ -137,3 +157,4 @@
       height: 600px;
   }
 }
+
