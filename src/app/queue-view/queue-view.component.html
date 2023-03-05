@@ -1,4 +1,5 @@
 <div style="overflow: hidden; width: 100%; height: 100%">
+<button routerLink="/" title="Leave Queue" routerLinkActive="active" class="leave-queue-button" (click)="leaveQueue($event)"><mat-icon>close</mat-icon></button>
 <h1 style="text-align: center;">Current Song List</h1>
 <div class="playlist-container" [ngClass]="{'owner': queue.queueSessionId == websocketService.sessionID && queue.setCode != '' && queue.inQueue}">
     <div class="sticky-header">

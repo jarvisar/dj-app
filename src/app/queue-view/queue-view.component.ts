@@ -102,6 +102,15 @@ export class QueueViewComponent implements OnInit {
     }
   }
 
+  leaveQueue(event: Event) {
+    this.queue.inQueue = false;
+    this.queue.setCode = "";
+    this.queue.queueSongs = [];
+    this.queue.requestedSongs = [];
+    this.maxVotes = false;
+    this.queue.queueSessionId = '';
+  }
+
   spotifySearch(event: Event){
     this.authGuard.allowNavigationToQueue(); // Allow router navigation to queue
     this.router.navigate(['/search']); // Navigate to queue

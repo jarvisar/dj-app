@@ -22,6 +22,33 @@ input {
     opacity: 1; /* Firefox */
 }
 
+.back-button{
+  position: fixed !important; 
+  top: 15px; 
+  left: 15px;
+  width: 40px; 
+  height: 40px; 
+  border-radius: 20px;
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  border: transparent;
+}
+
+.back-button mat-icon{
+  transform: scale(0.9);
+}
+
+.back-button:hover{
+  filter: brightness(0.8);
+  cursor: pointer;
+}
+
+.back-button:active{
+  filter: brightness(0.7);
+}
+
 @keyframes fadeInOut {
     0% {
       opacity: 0;

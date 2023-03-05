@@ -139,18 +139,6 @@ export class AppComponent implements OnInit {
 
   }
 
-  leaveQueue(event: Event) {
-    this.queue.inQueue = false;
-    this.queue.setCode = "";
-    this.queue.queueSongs = [];
-    this.newlyCreatedCode = "";
-    this.showQueueSongTable = false;
-    this.numVotes = 0;
-    this.queue.requestedSongs = [];
-    this.maxVotes = false;
-    this.queue.queueSessionId = '';
-  }
-
   requestedSongs: any = [];
   addSong(event: Event, track: any) {
     console.log("add song");
