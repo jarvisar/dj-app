@@ -187,7 +187,23 @@
 
     .search-spotify-button{
         position: fixed !important; 
-        top: 10px; 
-        left: calc(100% - 40px);
+        bottom: 25px; 
+        left: 20px;
+        background-color: #0d914f;
+        width: 40px; 
+        height: 40px; 
+        border-radius: 20px;
+        box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .search-spotify-button-owner{
+        position: fixed !important; 
+        bottom: 70px; 
+        left: 20px;
+        background-color: #0d914f;
+        width: 40px; 
+        height: 40px; 
+        border-radius: 20px;
+        box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
     }
 }
