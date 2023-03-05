@@ -249,6 +249,3 @@ if __name__ == '__main__':
     token_thread.daemon = True
     token_thread.start()
     socketio.run(app, host='0.0.0.0', port=5000)
-    # Start token refresh thread
-
-
