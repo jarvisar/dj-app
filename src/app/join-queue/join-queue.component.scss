@@ -21,3 +21,22 @@ input {
     font-size: 24px;
     opacity: 1; /* Firefox */
 }
+
+@keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .fade-in-out {
+    animation: fadeInOut 3s ease-in-out;
+  }
