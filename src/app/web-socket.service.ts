@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
-const url = 'http://localhost:5000'
+const url = 'http://192.168.1.2:5000'
 @Injectable({
   providedIn: 'root'
 })

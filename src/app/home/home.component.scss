@@ -40,3 +40,13 @@ mat-icon{
     color: #666;
     pointer-events: none;
 }
+
+@media only screen and (max-width: 600px) {
+  .button-background:hover {
+    filter: blur(0.5px);
+  }
+
+  .button-background {
+    filter: blur(1px);
+  }
+}
