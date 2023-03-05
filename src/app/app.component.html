@@ -1,7 +1,7 @@
 <div class="gradient">
 <body>
   <div class="content" role="main" style="height: calc(100% - 30px); overflow: hidden;">
-    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)" *ngIf="!router.isActive('/', true) && !router.isActive('/search', true)">Back</button>
+    <button routerLink="/" routerLinkActive="active" style="position: fixed; top: 15px; left: 15px;" (click)="leaveQueue($event)">Leave Queue</button>
     <!-- <div class="input-container" >
       <div class="create-queue-container">
         <input type="text" [(ngModel)]="newQueueName" placeholder="Queue Name" class="input">
