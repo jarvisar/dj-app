@@ -2,6 +2,8 @@
 
 This app is a collaborative queue management system designed for DJs and hosts at parties. It utilizes Flask Python backend, SQLite database, and SocketIO websockets for connections. The app also integrates with the Spotify API to allow users to search for and add songs to the queue.
 
+Check out the `angular` branch to see the current front-end code.
+
 ## Features
 
 - Collaborative queue management
