@@ -4,7 +4,7 @@ This app is a collaborative queue management system designed for DJs and hosts a
 
 Still need a good name...
 
-Check out the `backend` branch to see the current backend code.
+Check out the `backend` branch to see the current backend code and to-do list.
 
 ## Features
 
