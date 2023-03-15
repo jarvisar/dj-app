@@ -30,7 +30,7 @@ Check out the `backend` branch to see the current backend code and to-do list.
 ## Usage
 
 1. Create a new queue from a web browser to receive a unique four-digit code
-2. Partygoers can join the queue by entering the code on the app and searching for songs through the Spotify API
+2. Partygoers can join the queue by entering the code on the app and search for songs through the Spotify API
 3. The app tracks the number of requests for each song, creating a crowd-sourced playlist for the DJ to play sorted by the number of requests
 4. The DJ can view a list of songs sorted by the number of requests and remove songs after playing them to prevent replays
 5. The app also allows the DJ to reset the number of requests for a song, moving it to the bottom of the queue
