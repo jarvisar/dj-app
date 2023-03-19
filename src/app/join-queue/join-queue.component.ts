@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthGuard } from '../auth.guard';
 import { QueueService } from '../queue.service';
 import { WebSocketService } from '../web-socket.service';
@@ -31,13 +32,19 @@ export class JoinQueueComponent implements OnInit {
     }
   }
 
+  joinQueueSubscription!: Subscription;
   joinQueue(event?: Event) {
     console.log("join");
     if (this.checkConnection()){
       return;
     }
-    this.websocketService.joinQueue(this.inputCode).subscribe(
+    // Unsubscribe from previous subscription if it exists
+    if (this.joinQueueSubscription) {
+      this.joinQueueSubscription.unsubscribe();
+    }
+    this.joinQueueSubscription = this.websocketService.joinQueue(this.inputCode).subscribe(
       (data: any) => {
+        console.log("what??");
         console.log(data)
         if (data != undefined){
           this.queue.setCode = data.code; // Make sure set code is the returned code
@@ -78,7 +85,7 @@ export class JoinQueueComponent implements OnInit {
             this.errorMessage = ''; // remove class after animation ends
           }, 3000); // remove class after 5 seconds
         }
-        
+        this.joinQueueSubscription.unsubscribe();
       },
       (error) => {
         console.error('Error:', error);

@@ -115,4 +115,24 @@ export class QueueViewComponent implements OnInit {
     this.authGuard.allowNavigationToQueue(); // Allow router navigation to queue
     this.router.navigate(['/search']); // Navigate to queue
   }
+
+  removeSong(event: Event, track: any) {
+    this.websocketService.deleteSong(this.queue.setCode, track.id).subscribe(
+      ({ songs }: any) => {
+        console.log(songs);
+        // Find the index of the deleted song in queueSongs array
+        const index = this.queue.queueSongs.findIndex((song: any) => song.id === track.id);
+        // Remove the deleted song from the queueSongs array
+        this.queue.queueSongs.splice(index, 1);
+      },
+      (error) => {
+        console.error('Error:', error);
+        this.errorMessage = 'Error Removing Song'
+        setTimeout(() => {
+          this.errorMessage = ''; // remove class after animation ends
+        }, 3000); // remove class after 5 seconds
+      }
+    );
+  }
+  
 }

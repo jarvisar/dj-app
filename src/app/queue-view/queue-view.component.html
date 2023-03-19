@@ -13,6 +13,7 @@
         <div class="song-details">
           <div class="song-title">{{song.name}}</div>
           <div class="song-artist">{{song.artists[0].name}}</div>
+          <button title="Remove Song" class="remove-song-button" (click)="removeSong($event, song)"><mat-icon>close</mat-icon></button>
           <button [disabled]="!queue.inQueue || queue.requestedSongs.includes(song.id) || maxVotes" mat-raised-button (click)="addSong($event, song)" class="request-button">Request</button>
           <div class="request-count">{{song.count}} Requests</div>
         </div>

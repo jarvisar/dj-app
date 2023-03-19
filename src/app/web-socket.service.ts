@@ -73,6 +73,7 @@ export class WebSocketService {
   }
 
   joinQueue(code: string) {
+    console.log("hi!")
     return new Observable(observer => {
       this.socket.emit('join', { code });
       this.socket.once('queue_joined', (data: any) => {
@@ -90,75 +91,25 @@ export class WebSocketService {
       this.socket.once('song_added', (data: any) => {
         observer.next(data);
       });
-      this.socket.once('invalid_code', (data: any) => {
-        observer.next(data);
-      });
       this.socket.emit('add_song', { code, name, artist, track_id });
     });
   }
   
 
-  deleteSong(code: string, songId: string) {
-    this.socket.emit('delete_song', { code, songId });
+  deleteSong(code: string, track_id: string) {
+    console.log("hi!")
+    return new Observable(observer => {
+      this.socket.emit('delete_song', { code, track_id, sessionID: this.sessionID });
+      this.socket.on('song_deleted', (data: any) => {
+        observer.next(data);
+      });
+      this.socket.on('invalid_song', (data: any) => {
+        observer.next(data);
+      });
+    });
   }
 
   deleteQueue(code: string) {
     this.socket.emit('delete_queue', { code });
-  }
-
-  onQueueCreated(): Observable<any> {
-    return new Observable((observer) => {
-      this.socket.on('queue_created', (data: any) => {
-        observer.next(data);
-      });
-    });
-  }
-  
-  onQueueJoined() {
-    return new Observable((observer) => {
-      this.socket.on('queue_joined', (data: any) => {
-        observer.next(data);
-      });
-    });
-  }
-
-  onSongAdded() {
-    return new Observable((observer) => {
-      this.socket.on('song_added', (data: any) => {
-        observer.next(data);
-      });
-    });
-  }
-
-  onSongDeleted() {
-    return new Observable((observer) => {
-      this.socket.on('song_deleted', (data: any) => {
-        observer.next(data);
-      });
-    });
-  }
-
-  onInvalidCode() {
-    return new Observable((observer) => {
-      this.socket.on('invalid_code', () => {
-        observer.next();
-      });
-    });
-  }
-
-  onInvalidSong() {
-    return new Observable((observer) => {
-      this.socket.on('invalid_song', () => {
-        observer.next();
-      });
-    });
-  }
-
-  onInvalidDelete() {
-    return new Observable((observer) => {
-      this.socket.on('invalid_delete', () => {
-        observer.next();
-      });
-    });
   }
 }
