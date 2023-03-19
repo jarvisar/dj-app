@@ -1,38 +1,3 @@
-.request-button{
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    height: 30px;
-    width: 75px;
-    color: #ddd;
-    background-color: #0d914f;
-    border-radius: 10px;
-    border: transparent;
-    box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777, 0px 3px 0.5px #777;
-    transform: translateY(-2px);
-    transition: 0.1s transform, 0.1s box-shadow;
-}
-
-.request-button:disabled{
-    filter: brightness(75%);
-    box-shadow: 0px 2px 0.5px #666, 0px 1px 0.5px #666;
-    transform: translateY(-1px);
-    cursor: default;
-}
-
-.request-button:hover{
-    cursor: pointer;
-    box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777;
-    transform: translateY(-1px);
-    cursor: pointer;
-}
-
-.request-button:active{
-    box-shadow: 0px 1px 0.5px #888;
-    transform: translateY(0px);
-    cursor: pointer;
-}
-
 .playlist-container {
     background-color: #282828;
     color: #fff;
@@ -90,6 +55,7 @@
     align-items: center;
     padding: 1rem;
     transition: background-color 0.2s ease;
+    position: relative;
 }
 
 .song:hover {
@@ -109,8 +75,9 @@
 .song-details {
     display: flex;
     flex-direction: column;
-    position: relative;
+    
     width: 100%;
+    
 }
 
 .song-title {
@@ -136,6 +103,71 @@
     align-items: center; 
     border-radius: 15px;
     border: transparent;
+}
+
+.request-button{
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    height: 30px;
+    width: 75px;
+    color: #ddd;
+    
+    background-color: #0d914f;
+    border-radius: 10px;
+    border: transparent;
+    box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777, 0px 3px 0.5px #777;
+    transform: translateY(-2px);
+    transition: 0.1s transform, 0.1s box-shadow;
+}
+
+.request-button:disabled{
+    filter: brightness(75%);
+    box-shadow: 0px 2px 0.5px #666, 0px 1px 0.5px #666;
+    transform: translateY(-1px);
+    cursor: default;
+}
+
+.request-button:hover{
+    cursor: pointer;
+    box-shadow: 0px 1px 0.5px #777, 0px 2px 0.5px #777;
+    transform: translateY(-1px);
+    cursor: pointer;
+}
+
+.request-button:active{
+    box-shadow: 0px 1px 0.5px #888;
+    transform: translateY(0px);
+    cursor: pointer;
+}
+
+.remove-song-button{
+    background-color: #b32d53;
+    position: absolute; 
+    top: 10px;
+    right: 5px;
+    height: 30px;
+    width: 30px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    border-radius: 20px;
+    border: transparent;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.remove-song-button:hover{
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+.remove-song-button:active{
+    filter: brightness(0.7);
+}
+
+.remove-song-button mat-icon{
+    color: #ddd;
+    transform: scale(0.7);
 }
   
 .search-spotify-button:hover{
