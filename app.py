@@ -163,14 +163,17 @@ def add_song(data):
 def delete_song(data):
     print("== Deleting Song " + data['track_id'] + " from queue " + data['code'] + " ==")
     code = data['code']
-    song_id = data['song_id']
+    track_id = data['track_id']
+    session_id = data['sessionID']
     queue = Queue.query.filter_by(queue_code=code).first()
-    if queue and queue.creator_session_id == request.sid: # Only queue creator can delete songs
-        queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, song_id=song_id).first()
+    if queue and queue.creator_session_id == session_id: # Only queue creator can delete songs
+        queue_song = QueueSong.query.filter_by(queue_id=queue.queue_id, track_id=track_id).first()
+        print(queue_song)
         if queue_song:
+            print("Deleting song " + track_id + " from queue " + code)
             db.session.delete(queue_song)
             db.session.commit()
-            song_list = [{'id': queue_song.song.song_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
+            song_list = [{'id': queue_song.song.track_id, 'name': queue_song.song.song_name, 'artist': queue_song.song.artist_name, 'count': queue_song.request_count} for queue_song in queue.queue_songs]
             emit('song_deleted', {'code': code, 'songs': song_list}, broadcast=True)
         else:
             emit('invalid_song')
