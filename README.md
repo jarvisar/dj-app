@@ -46,3 +46,5 @@ This application is still very early in development and is subject to drastic ch
   <img src="https://i.imgur.com/wDEUlZl.png" width="250" /> 
   <img src="https://i.imgur.com/bvN4pg7.png" width="250" />
 </p>
+
+Quick demo available here: https://i.imgur.com/YybcWVP.mp4
