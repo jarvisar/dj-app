@@ -42,7 +42,7 @@ This application is still very early in development and is subject to drastic ch
 ## Screenshots (updated 4/1/23)
 
 <p float="left">
-  <img src="https://i.imgur.com/kPpDz2b.png" width="350" />
-  <img src="https://i.imgur.com/wDEUlZl.png" width="350" /> 
-  <img src="https://i.imgur.com/bvN4pg7.png" width="350" />
+  <img src="https://i.imgur.com/kPpDz2b.png" width="250" />
+  <img src="https://i.imgur.com/wDEUlZl.png" width="250" /> 
+  <img src="https://i.imgur.com/bvN4pg7.png" width="250" />
 </p>
