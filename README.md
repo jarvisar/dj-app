@@ -38,3 +38,11 @@ Check out the `backend` branch to see the current backend code and to-do list.
 ## Known Issues
 
 This application is still very early in development and is subject to drastic changes. 
+
+## Screenshots (updated 4/1/23)
+
+<p float="left">
+  <img src="https://i.imgur.com/kPpDz2b.png" width="150" />
+  <img src="https://i.imgur.com/wDEUlZl.png" width="150" /> 
+  <img src="https://i.imgur.com/bvN4pg7.png" width="150" />
+</p>
